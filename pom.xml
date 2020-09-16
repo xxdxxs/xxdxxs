@@ -64,7 +64,6 @@
             </activation>
             <build>
                 <plugins>
-                    <!-- Nexus Staging Maven插件是将组件部署到OSSRH并将其发布到Central Repository的推荐方法。要配置它，只需将插件添加到Maven pom.xml即可。 -->
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
                         <artifactId>nexus-staging-maven-plugin</artifactId>
@@ -143,7 +142,6 @@
                     </plugin>-->
                 </plugins>
             </build>
-            <!-- 【注】snapshotRepository 与 repository 中的 id 一定要与 setting.xml 中 server 的 id 保持一致！ -->
             <distributionManagement>
                 <snapshotRepository>
                     <id>xxdxxs</id>
