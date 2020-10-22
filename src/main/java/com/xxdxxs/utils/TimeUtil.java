@@ -1,8 +1,16 @@
 package com.xxdxxs.utils;
 
+
+
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+/**
+ * @Author: xxdxxs
+ * @Date: Created in 9:47 2020/9/18
+ * @Description:
+ */
 public class TimeUtil {
 
     /**
@@ -28,5 +36,10 @@ public class TimeUtil {
         String lastDayOfMonth = sdf.format(cal.getTime());
         return lastDayOfMonth;
 
+    }
+
+    public static void main(String[] args) {
+        Object object = null;
+        System.out.println(">>>>>>");
     }
 }
