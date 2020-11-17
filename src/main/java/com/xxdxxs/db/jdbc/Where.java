@@ -1,103 +1,115 @@
 package com.xxdxxs.db.jdbc;
 
-import com.xxdxxs.enums.Operator;
-import org.apache.commons.lang3.tuple.Pair;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import com.xxdxxs.db.querier.Criterion;
+
+import java.util.*;
+import java.util.function.Supplier;
 
 /**
  * @author xxdxxs
  */
-public class Where<T> {
+public class Where implements FeaturedWhere<Where>{
 
-    private T t;
-    private List<Criteria> criteriaList = new ArrayList<>();
 
-    private Queue<String> linkQueue = new LinkedList<String>();
+    private final String WHERE = " where ";
 
-    private Queue<String> aliasQueue = new LinkedList<String>();
+    protected List<Criterion> criterionList = new ArrayList<>();
 
-    private boolean isMultipleTable = false;
+    protected List<Boolean> linkList = new ArrayList<>();
 
-    public Where(T t) {
-        this.t = t;
+    protected Map<String, Object> paramValues = new LinkedHashMap<>();
+
+    private boolean isJoinByAnd = true;
+
+    public Map<String, Object> getParamValues(){
+        criterionList.stream().forEach(x -> {
+            paramValues.putAll(x.paramValues());
+        });
+        return paramValues;
     }
 
-    public Where(T t, boolean isMultipleTable){
-        this.t = t;
-        this.isMultipleTable = isMultipleTable;
+    public Where(){
+
     }
 
-    /**
-     * 多表联合查询时，设置查询字段属于哪张表
-     * @param tableName
-     * @return
-     */
-    public Where ofWhich(String tableName){
-        aliasQueue.offer(tableName);
-        return this;
-    };
-
-
-    public Where whereEqual(String column, Object value){
-        criteriaList.add(new Criteria(column, value, Operator.EQUAL));
-        return this;
+    protected void setParam(Map<String, Object> map){
+        paramValues.putAll(map);
     }
 
-    public Where whereIn(String column, List<?> list){
-        criteriaList.add(new Criteria(column, list, Operator.IN));
-        return this;
-    }
-
-    public Where whereBetween(String column, Object left, Object right){
-        Pair pair = Pair.of(left, right);
-        criteriaList.add(new Criteria(column, pair, Operator.BETWEEN));
-        return this;
-    }
-
-    public Where whereLessThan(String column, Object value){
-        return this;
-    }
-
-    public Where whereMoreThan(String column, Object value){
-        return this;
-    }
-
-    public Where whereLessEqual(String column, Object value){
-        return this;
-    }
-
-    public Where whereMoreEqual(String column, Object value){
-        return this;
-    }
-
-    public Where whereLike(String column, Object value){
-        return this;
-    }
-
-
-    public Where or(){
-        linkQueue.offer(" or ");
-        return this;
-    }
-
-    public Where and(){
-        linkQueue.offer(" and ");
-        return this;
-    }
-
-    public T end(){
-        return t;
-    }
 
     @Override
     public String toString(){
         StringBuffer stringBuffer = new StringBuffer();
-        criteriaList.stream().forEach( x -> {
-            stringBuffer.append(x.toString()).append(linkQueue.poll());
-        });
+        int i = 0;
+        int j = criterionList.size();
+        for(Criterion criterion : criterionList) {
+            if (criterion.getValue().getClass() == NestWhere.class) {
+                NestWhere childWhere = (NestWhere) criterion.getValue();
+                stringBuffer.append(childWhere.toString());
+                setParam(childWhere.getParamValues());
+            }
+            stringBuffer.append(criterion.toString());
+            if(i < j-1){
+                stringBuffer.append(linkList.get(i) ? " and " : " or ");
+            }
+            setParam(criterion.paramValues());
+            i++;
+        }
         return stringBuffer.toString();
+    }
+
+    public void appendCriterion(StringBuffer stringBuffer, Criterion criterion, int index){
+        String link = " ";
+        try{
+            boolean flag = linkList.get(index);
+            if(flag){
+                link = " and ";
+            }else {
+                link = " or  ";
+            }
+        }catch (NullPointerException e){
+            link = " ";
+        }
+        stringBuffer.append(criterion.toString()).append(link);
+    }
+
+    @Override
+    public Where where(Criterion Criterion) {
+        criterionList.add(Criterion);
+        if(criterionList.size() > 1){
+            linkList.add(isJoinByAnd);
+        }
+        return this;
+    }
+
+    @Override
+    public Where where(boolean create) {
+        return create ? new Where() : this;
+    }
+
+    @Override
+    public NestWhere nestWhere() {
+        return new NestWhere();
+    }
+
+    public List<Criterion> getCriterions() {
+        return criterionList;
+    }
+
+    public List<Boolean> getlinkList() {
+        return linkList;
+    }
+
+
+    @Override
+    public Where or() {
+        isJoinByAnd = false;
+        return this;
+    }
+
+    @Override
+    public Where and() {
+        isJoinByAnd = true;
+        return this;
     }
 }

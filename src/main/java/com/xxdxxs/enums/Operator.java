@@ -44,7 +44,7 @@ public enum Operator {
 
 
     public String getSign() {
-        return this.sign;
+        return " " + this.sign + " ";
     }
 
     public String getCode() {

@@ -1,4 +1,6 @@
-package com.xxdxxs.db.jdbc;
+package com.xxdxxs.db.component;
+
+import com.xxdxxs.db.jdbc.Operate;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -23,6 +25,10 @@ public class DataFilter {
         this.map.put(key, value);
         return this;
     }
+
+
+
+
 
 
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package com.xxdxxs.db.jdbc;
+package com.xxdxxs.db.querier;
 
 
 import com.xxdxxs.enums.Operator;
@@ -7,8 +7,6 @@ import com.xxdxxs.utils.CommonUtil;
 public class Join {
     public final static String LEFT_JOIN = " left join ";
     public final static String RIGHT_JOIN = " right join ";
-
-    private String baseTable;
 
     private String targetTable;
 
@@ -19,8 +17,7 @@ public class Join {
     private String targetColumn;
 
 
-    public Join(String baseTable, String targetTable, String type, String baseColumn, String targetColumn) {
-        this.baseTable = baseTable;
+    public Join(String targetTable, String type, String baseColumn, String targetColumn) {
         this.targetTable = targetTable;
         this.baseColumn = baseColumn;
         this.type = type;
@@ -28,13 +25,13 @@ public class Join {
     }
 
     public String on(){
-        if(!CommonUtil.isAllNotNull(baseTable, targetTable, baseColumn, targetColumn)){
+        if(!CommonUtil.isAllNotNull(targetTable, baseColumn, targetColumn)){
             return null;
         }
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append(type).append(targetTable).append(" on ")
-                .append(baseTable + "."+ baseColumn).append(Operator.EQUAL.getSign())
-                .append(targetTable + "." + targetColumn);
+                .append(baseColumn).append(Operator.EQUAL.getSign())
+                .append(targetColumn);
         return stringBuffer.toString();
     }
 

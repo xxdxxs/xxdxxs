@@ -183,4 +183,24 @@ public class Validation {
         }
     }
 
+    /**
+     * 检验sql参数是否含有非法字符
+     * @param value
+     * @return
+     */
+    public static boolean isVaild(String value) {
+        if (StringUtils.isEmpty(value)) {
+            return false;
+        }
+        value = value.toLowerCase();
+        String cs = "'|and|\"|exec|insert|select|delete|update|count|*|%|=|chr|mid|master|truncate|char|declare|; |or|-|+|,";
+        String[] csArray = cs.split("\\|");
+        for(int i=0;i<csArray.length;i++){
+            if(value.indexOf(csArray[i])!=-1){
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

@@ -1,4 +1,6 @@
-package com.xxdxxs.db.jdbc;
+package com.xxdxxs.db.querier;
+
+import com.xxdxxs.db.component.DataFilter;
 
 public class SqlBuilder {
 
