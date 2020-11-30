@@ -1,8 +1,6 @@
 package com.xxdxxs.db.querier;
 
-import com.xxdxxs.db.jdbc.NestWhere;
-import com.xxdxxs.db.querier.Criterion;
-import com.xxdxxs.db.jdbc.Where;
+import com.xxdxxs.support.NestWhere;
 import com.xxdxxs.enums.Operator;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -19,6 +17,9 @@ public interface Criteria<T, A> {
     }
 
     default T where(String column, Object value){
+        if(value instanceof List){
+            return whereIn(column, (List<?>) value);
+        }
         return whereEqual(column, value);
     }
 
