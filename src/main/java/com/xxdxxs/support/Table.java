@@ -1,4 +1,4 @@
-package com.xxdxxs.db.jdbc;
+package com.xxdxxs.support;
 
 import lombok.Data;
 
