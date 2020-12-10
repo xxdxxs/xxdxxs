@@ -1,18 +1,14 @@
-package com.xxdxxs.db.jdbc;
+package com.xxdxxs.support;
 
 import com.xxdxxs.db.querier.AbstractUpdater;
 import com.xxdxxs.db.querier.Criterion;
 import com.xxdxxs.db.querier.FeaturedSetter;
-
 import java.util.*;
+import java.util.List;
 
 
 public class Update extends AbstractUpdater<Update, Where, Column> implements FeaturedSetter<Update>, FeaturedWhere<Update> {
 
-    /**
-     * 区分预编译sql是冒号还是问号形式
-     */
-    public final static String DEFINED = "DEFINED";
 
     public Update() {
         super(Where::new);
@@ -46,6 +42,20 @@ public class Update extends AbstractUpdater<Update, Where, Column> implements Fe
         return array;
     }
 
+
+    public int[] getTypes(){
+        List<Integer> list = new ArrayList<>();
+        assignments.stream().forEach(k ->{
+            list.add(k.getType());
+        });
+        getRestriction().criterionList.stream().forEach(k ->{
+            list.add(getColumnType(k.getValue()));
+        });
+        Integer[] array = list.toArray(new Integer[assignments.size()]);
+        int[] types = Arrays.stream(array).mapToInt(Integer::valueOf).toArray();
+        return types;
+    }
+
     @Override
     public String toString() {
         return  stringfy("");
@@ -68,7 +78,7 @@ public class Update extends AbstractUpdater<Update, Where, Column> implements Fe
             stringBuffer.append(" where ");
         }
         String str = stringBuffer.append(getRestriction().toString()).toString();
-        if(DEFINED.equals(type)){
+        if(Column.DEFINED.equals(type)){
             for(Column column: sets){
                 str = str.replaceAll(":"+column.getName(), "?");
             };
