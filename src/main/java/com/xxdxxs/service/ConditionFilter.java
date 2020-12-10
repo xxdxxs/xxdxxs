@@ -3,22 +3,20 @@ package com.xxdxxs.service;
 import com.xxdxxs.enums.Operator;
 import org.springframework.util.StringUtils;
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.EnumMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
-public class ConditionFilter {
+public class ConditionFilter extends ConditionFilterSupport<ConditionFilter>{
 
     /**
      * 查询条件
      */
     private Map<String, Data> data = new LinkedHashMap<>();
 
+    private List<String> needColumns = new ArrayList<>();
 
     public ConditionFilter(){}
 
-    public ConditionFilter of(){
+    public static ConditionFilter of(){
         return new ConditionFilter();
     }
 
@@ -30,6 +28,34 @@ public class ConditionFilter {
             this.data.computeIfAbsent(name, Data::new).setOperation(operator, value);
         }
         return this;
+    }
+
+    public Map<String, Data> getData() {
+        return data;
+    }
+
+    public ConditionFilter setNeedColumns(List<String> columns){
+        this.needColumns = columns;
+        return this;
+    }
+
+    public ConditionFilter setNeedColumns(String... columns){
+        this.needColumns = Arrays.asList(columns);
+        return this;
+    }
+
+    public List<String> getNeedColumns(){
+        return needColumns;
+    }
+
+    public String getNeedColumnsAsString(){
+        return String.join(",",needColumns);
+    }
+
+    public static void main(String[] args) {
+        ConditionFilter filter = ConditionFilter.of();
+        filter.setNeedColumns("asd", "dasd", "rrre");
+        System.out.println(filter.getNeedColumnsAsString());
     }
 
     /**
@@ -51,7 +77,6 @@ public class ConditionFilter {
     public ConditionFilter notEqual(String name, Serializable value){
         return set(name, Operator.NOT_EQUAL, value);
     }
-
 
     /**
      * 模糊查询
@@ -140,8 +165,10 @@ public class ConditionFilter {
      * @return
      */
     public ConditionFilter in(String name, Serializable... values){
-        return set(name, Operator.IN, values);
+        return set(name, Operator.IN, Arrays.asList(values));
     }
+
+
 
 
 
@@ -173,6 +200,10 @@ public class ConditionFilter {
 
         public void setName(String name) {
             this.name = name;
+        }
+
+        public Map<Operator, Object> getValues() {
+            return values;
         }
     }
 
