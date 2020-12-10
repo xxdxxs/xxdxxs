@@ -48,6 +48,10 @@ public class Validator {
         return this;
     }
 
+    public FormHandler getForm(){
+        return this.context.getFormHandler();
+    }
+
     public Context getContext(){
         return this.context;
     }
