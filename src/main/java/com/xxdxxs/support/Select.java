@@ -1,4 +1,4 @@
-package com.xxdxxs.db.jdbc;
+package com.xxdxxs.support;
 
 import com.xxdxxs.db.querier.AbstractSelect;
 import com.xxdxxs.db.querier.Join;
