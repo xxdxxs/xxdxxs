@@ -4,6 +4,10 @@ package com.xxdxxs.db.querier;
 import com.xxdxxs.enums.Operator;
 import com.xxdxxs.utils.CommonUtil;
 
+/**
+ * 过滤条件连接类
+ * @author xxdxxs
+ */
 public class Join {
     public final static String LEFT_JOIN = " left join ";
     public final static String RIGHT_JOIN = " right join ";
