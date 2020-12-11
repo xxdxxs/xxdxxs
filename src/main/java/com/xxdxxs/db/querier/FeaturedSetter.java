@@ -1,13 +1,19 @@
 package com.xxdxxs.db.querier;
 
-import com.xxdxxs.db.jdbc.Column;
+import com.xxdxxs.support.Column;
 import com.xxdxxs.utils.CommonUtil;
+import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Types;
 import java.util.Map;
 
+
+/**
+ * 属性设置接口类
+ * @author xxdxxs
+ */
 public interface FeaturedSetter<T> extends Setter<T, Column>{
 
     default T set(String key, Serializable value, int type) {
@@ -47,7 +53,7 @@ public interface FeaturedSetter<T> extends Setter<T, Column>{
     }
 
     default T set(Map<String, ? extends Serializable> columns) {
-        if (!CommonUtil.isEmpty(columns)) {
+        if (!StringUtils.isEmpty(columns)) {
             columns.forEach((k, v) -> this.set(k, v, Types.OTHER));
         }
         return (T) this;
