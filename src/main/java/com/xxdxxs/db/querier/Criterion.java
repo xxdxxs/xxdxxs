@@ -1,14 +1,19 @@
 package com.xxdxxs.db.querier;
 
-import com.xxdxxs.db.jdbc.Where;
+import com.xxdxxs.support.Where;
 import com.xxdxxs.enums.Operator;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.HashMap;
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 条件设置处理类
+ * @author xxdxxs
+ */
 public class Criterion {
 
     private String alias;
@@ -42,8 +47,8 @@ public class Criterion {
         this.isPairable = true;
     }
 
-    public Criterion(String column, List<?> list , Operator operator) {
-        initialize(column, list, operator);
+    public Criterion(String column, Collection<? extends Serializable> collection , Operator operator) {
+        initialize(column, collection, operator);
         this.isList = true;
     }
 
