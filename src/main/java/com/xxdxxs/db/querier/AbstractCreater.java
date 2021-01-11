@@ -7,21 +7,16 @@ import java.util.*;
 /**
  * @author xxdxxs
  */
-public abstract class AbstractCreater<R extends AbstractCreater<R, V>,  V extends Column> implements Setter<R, V>{
+public abstract class AbstractCreater<R extends AbstractCreater<R, V>, V extends Column> extends AbstractSpace<R> implements Setter<R, V> {
 
-    protected String table;
 
     protected final Set<V> assignments = new TreeSet<>();
 
-
-    public R into(String tableName){
-        this.table = tableName;
+    public R into(String tableName) {
+        super.table.setTableName(tableName);
         return (R) this;
     }
 
-    public String getTable(){
-        return this.table;
-    }
 
     @SuppressWarnings("unchecked")
     @Override
@@ -32,18 +27,18 @@ public abstract class AbstractCreater<R extends AbstractCreater<R, V>,  V extend
         return (R) this;
     }
 
-    public Map<String, Object> getParams(){
+    public Map<String, Object> getParams() {
         Map<String, Object> map = new HashMap(assignments.size());
-        assignments.stream().forEach(k ->{
+        assignments.stream().forEach(k -> {
             map.put(k.getName(), k.getValue());
         });
         return map;
     }
 
 
-    public Object[] getArgs(){
+    public Object[] getArgs() {
         List<Object> list = new ArrayList<>();
-        assignments.stream().forEach(k ->{
+        assignments.stream().forEach(k -> {
             list.add(k.getValue());
         });
         Object[] array = list.toArray(new Object[assignments.size()]);
@@ -51,9 +46,9 @@ public abstract class AbstractCreater<R extends AbstractCreater<R, V>,  V extend
     }
 
 
-    public int[] getTypes(){
+    public int[] getTypes() {
         List<Integer> list = new ArrayList<>();
-        assignments.stream().forEach(k ->{
+        assignments.stream().forEach(k -> {
             list.add(k.getType());
         });
         Integer[] array = list.toArray(new Integer[assignments.size()]);

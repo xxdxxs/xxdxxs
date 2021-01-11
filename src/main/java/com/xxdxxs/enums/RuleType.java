@@ -1,5 +1,9 @@
 package com.xxdxxs.enums;
 
+/**
+ * @author xxdxxs
+ */
+
 public enum RuleType {
 
     SOMETIMES("sometimes"),

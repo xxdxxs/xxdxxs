@@ -1,7 +1,7 @@
 package com.xxdxxs.db.querier;
 
+import com.xxdxxs.support.AutoCalculate;
 import com.xxdxxs.support.Column;
-import com.xxdxxs.utils.CommonUtil;
 import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
@@ -12,9 +12,10 @@ import java.util.Map;
 
 /**
  * 属性设置接口类
+ *
  * @author xxdxxs
  */
-public interface FeaturedSetter<T> extends Setter<T, Column>{
+public interface FeaturedSetter<T> extends Setter<T, Column> {
 
     default T set(String key, Serializable value, int type) {
         return set(new Column(key, value, type));
@@ -50,6 +51,10 @@ public interface FeaturedSetter<T> extends Setter<T, Column>{
 
     default T set(String key, java.util.Date value) {
         return set(key, value, Types.DATE);
+    }
+
+    default T set(String key, AutoCalculate value) {
+        return set(key, value, Types.OTHER);
     }
 
     default T set(Map<String, ? extends Serializable> columns) {

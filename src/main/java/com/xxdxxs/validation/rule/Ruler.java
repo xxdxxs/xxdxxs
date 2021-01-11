@@ -12,43 +12,43 @@ public class Ruler {
         this.ruleChain = ruleChain;
     }
 
-    public Ruler sometimes(){
+    public Ruler sometimes() {
         ruleChain.addRule(Sometimes.getInstance());
         return this;
     }
 
-    public Ruler must(){
+    public Ruler must() {
         ruleChain.addRule(Must.getInstance());
         return this;
     }
 
-    public Ruler string(){
+    public Ruler string() {
         return setDataType(DataType.STRING);
     }
 
-    public Ruler number(){
+    public Ruler number() {
         return setDataType(DataType.NUMBER);
     }
 
-    public Ruler list(){
+    public Ruler list() {
         return setDataType(DataType.LIST);
     }
 
-    public Ruler date(){
+    public Ruler date() {
         return setDataType(DataType.DATE);
     }
 
-    public Ruler date(String format){
+    public Ruler date(String format) {
         ruleChain.addRule(DataTypeRule.getInstance(DataType.DATE).setFormat(format));
         return this;
     }
 
-    private Ruler setDataType(DataType dataType){
+    private Ruler setDataType(DataType dataType) {
         ruleChain.addRule(DataTypeRule.getInstance(dataType));
         return this;
     }
 
-    public Ruler set(String key, String name){
+    public Ruler set(String key, String name) {
         return this.ruleChain.getNextRuler(key, name);
     }
 

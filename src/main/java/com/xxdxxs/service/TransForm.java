@@ -4,7 +4,6 @@ import com.xxdxxs.db.querier.Pagination;
 import com.xxdxxs.enums.Operator;
 import com.xxdxxs.support.Select;
 import com.xxdxxs.utils.StringUtils;
-import com.xxdxxs.validation.Validation;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -14,33 +13,33 @@ import java.util.function.BiConsumer;
 
 public class TransForm {
 
-    public TransForm(){
+    public TransForm() {
 
     }
 
-    public static Turn of(ConditionFilter conditionFilter){
+    public static Turn of(ConditionFilter conditionFilter) {
         return new Turn(conditionFilter);
     }
 
-    public static Turn of(FormHandler formHandler){
+    public static Turn of(FormHandler formHandler) {
         return new Turn(formHandler);
     }
 
 
-    public static class Turn{
+    public static class Turn {
 
         private ConditionFilter conditionFilter;
 
         private FormHandler formHandler;
 
-        public Turn(ConditionFilter conditionFilter){
-            if(conditionFilter != null){
+        public Turn(ConditionFilter conditionFilter) {
+            if (conditionFilter != null) {
                 this.conditionFilter = conditionFilter;
             }
         }
 
-        public Turn(FormHandler formHandler){
-            if(formHandler != null){
+        public Turn(FormHandler formHandler) {
+            if (formHandler != null) {
                 this.formHandler = formHandler;
             }
         }
@@ -53,10 +52,10 @@ public class TransForm {
             return new Turn(formHandler);
         }
 
-        public Select getQuerier(String table){
+        public Select getQuerier(String table) {
             Select select = Select.of().from(table);
             String columns = conditionFilter.getNeedColumnsAsString();
-            if(!StringUtils.isEmpty(columns)){
+            if (!StringUtils.isEmpty(columns)) {
                 select.columns(columns);
             }
             Map<String, ConditionFilter.Data> datas = conditionFilter.getData();
@@ -65,72 +64,66 @@ public class TransForm {
                 Map<Operator, Object> values = v.getValues();
                 values.forEach((j, g) -> {
                     Object value = g;
-                    if(g instanceof Optional){
-                        value = ((Optional)g).get();
-                        System.out.println("value= " + value);
+                    if (g instanceof Optional) {
+                        value = ((Optional) g).get();
                     }
-                    switch (j){
+                    switch (j) {
                         default:
                         case EQUAL:
                             callBack(name, value, select::whereEqual);
                             break;
                         case NOT_EQUAL:
-                            select.whereNotEqual(name, value);
+                            callBack(name, value, select::whereNotEqual);
                             break;
                         case LIKE:
-                            select.whereLike(name, value);
+                            callBack(name, value, select::whereLike);
                             break;
                         case START_WITH:
-                            select.whereStartWith(name, value);
+                            callBack(name, value, select::whereStartWith);
                             break;
                         case END_WITH:
-                            select.whereEndWith(name, value);
+                            callBack(name, value, select::whereEndWith);
                             break;
                         case IN:
-                            select.whereIn(name, (Collection<? extends Serializable>) g);
+                            callBack(name, (Collection<? extends Serializable>) g, select::whereIn);
                             break;
                         case LESS_THAN:
-                            select.whereLessThan(name, g);
+                            callBack(name, value, select::whereLessThan);
                             break;
                         case LESS_THAN_OR_EQUAL:
-                            select.whereLessEqual(name, g);
+                            callBack(name, value, select::whereLessEqual);
                             break;
                         case GREATER_THAN:
-                            select.whereMoreThan(name, g);
+                            callBack(name, value, select::whereGreaterThan);
                             break;
                         case GREATER_THAN_OR_EQUAL:
-                            select.whereMoreEqual(name, g);
+                            callBack(name, value, select::whereGreaterEqual);
                             break;
                     }
                 });
             });
             String groups = conditionFilter.getGroupsAsString();
-            if(!StringUtils.isEmpty(groups)){
+            if (!StringUtils.isEmpty(groups)) {
                 select.groupBy(groups);
             }
 
             Map<String, Boolean> sorts = conditionFilter.getSorts();
-            if(!sorts.isEmpty()){
-                sorts.forEach((k,v) -> {
+            if (!sorts.isEmpty()) {
+                sorts.forEach((k, v) -> {
                     select.sort(k, v);
                 });
             }
             Pagination pager = conditionFilter.getPagination();
-            if(pager != null) {
+            if (pager != null) {
                 select.limit(pager);
             }
             return select;
         }
 
-        public void callBack (String name, Object object, BiConsumer<String, Object> biConsumer){
+        public <T> void callBack(String name, T object, BiConsumer<String, T> biConsumer) {
             biConsumer.accept(name, object);
         }
     }
 
-
-    public static void main(String[] args) {
-        Optional<String> a = Optional.of("sad");
-        System.out.println(a.get());
-    }
 
 }

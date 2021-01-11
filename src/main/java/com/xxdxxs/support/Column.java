@@ -1,16 +1,23 @@
-package com.xxdxxs.db.jdbc;
+package com.xxdxxs.support;
 
 import com.xxdxxs.db.querier.AbstractAssignment;
 
 import java.math.BigDecimal;
+import java.sql.*;
 import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.sql.Types;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-public class Column extends AbstractAssignment<Column>{
+/**
+ * 字段列
+ *
+ * @author xxdxxs
+ */
+public class Column extends AbstractAssignment<Column> {
+
+    /**
+     * 区分预编译sql是冒号还是问号形式
+     */
+    public final static String DEFINED = "DEFINED";
 
     private static final Map<Class<?>, Integer> TYPES = new HashMap<>();
 
@@ -29,6 +36,7 @@ public class Column extends AbstractAssignment<Column>{
         TYPES.put(Date.class, Types.DATE);
         TYPES.put(Time.class, Types.TIME);
         TYPES.put(Timestamp.class, Types.TIMESTAMP);
+        TYPES.put(AutoCalculate.class, Types.OTHER);
 
     }
 
@@ -64,5 +72,15 @@ public class Column extends AbstractAssignment<Column>{
     public static int getType(Class<?> clazz) {
         return TYPES.getOrDefault(clazz, Types.OTHER);
     }
+
+   /* public static int getColumnType(Object object) {
+        for (Class clazz : TYPES.keySet()) {
+            if(clazz.isInstance(object)){
+                return TYPES.get(clazz);
+            }
+        }
+        return Types.OTHER;
+    }*/
+
 
 }

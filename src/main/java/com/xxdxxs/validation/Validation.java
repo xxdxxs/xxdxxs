@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.util.NumberUtils;
 import org.springframework.util.StringUtils;
+
 import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,13 +39,13 @@ public class Validation {
         } else if (value instanceof String) {
             return String.valueOf(value).trim().equals("");
         } else if (value instanceof CharSequence) {
-            return ((CharSequence)value).length() == 0;
+            return ((CharSequence) value).length() == 0;
         } else if (value.getClass().isArray()) {
             return Array.getLength(value) == 0;
         } else if (value instanceof Collection) {
-            return ((Collection)value).isEmpty();
+            return ((Collection) value).isEmpty();
         } else if (value instanceof Map) {
-            return ((Map)value).isEmpty();
+            return ((Map) value).isEmpty();
         } else {
             return false;
         }
@@ -66,7 +67,7 @@ public class Validation {
         return isClass(value, Collection.class);
     }
 
-    public static boolean isList(Object value){
+    public static boolean isList(Object value) {
         return isClass(value, List.class);
     }
 
@@ -79,7 +80,7 @@ public class Validation {
     }
 
     public static <T extends Number> boolean isNumber(Object value, Class<T> clazz) {
-        return isNumber(value, clazz, (Predicate)null);
+        return isNumber(value, clazz, (Predicate) null);
     }
 
     public static <T extends Number> boolean isNumber(Object value, Class<T> clazz, Predicate<Number> callback) {
@@ -174,7 +175,7 @@ public class Validation {
 
     public static boolean isJSON(Object value) {
         try {
-            if(!isPresent(value) || !isString(value)){
+            if (!isPresent(value) || !isString(value)) {
                 return false;
             }
             return new ObjectMapper().readTree(String.valueOf(value)) != null;
@@ -185,6 +186,7 @@ public class Validation {
 
     /**
      * 检验sql参数是否含有非法字符
+     *
      * @param value
      * @return
      */
@@ -195,8 +197,8 @@ public class Validation {
         value = value.toLowerCase();
         String cs = "'|and|\"|exec|insert|select|delete|update|count|*|%|=|chr|mid|master|truncate|char|declare|; |or|-|+|,";
         String[] csArray = cs.split("\\|");
-        for(int i=0;i<csArray.length;i++){
-            if(value.indexOf(csArray[i])!=-1){
+        for (int i = 0; i < csArray.length; i++) {
+            if (value.indexOf(csArray[i]) != -1) {
                 return false;
             }
         }

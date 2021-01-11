@@ -8,6 +8,7 @@ import java.util.Set;
 
 /**
  * 字段值设置接口
+ *
  * @author xxdxxs
  */
 public interface Setter<R, V extends Column> {
@@ -19,7 +20,7 @@ public interface Setter<R, V extends Column> {
             variables.forEach(this::set);
         }
 
-        return (R)this;
+        return (R) this;
     }
 
     Set<V> getSets();

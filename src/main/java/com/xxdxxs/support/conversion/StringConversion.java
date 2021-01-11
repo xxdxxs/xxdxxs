@@ -4,7 +4,10 @@ import com.xxdxxs.validation.Validation;
 
 import java.util.Optional;
 
-public class StringConversion implements Conversion<String>{
+/**
+ * @author xxdxxs
+ */
+public class StringConversion implements Conversion<String> {
 
     @Override
     public Optional<String> convert(Object value) {

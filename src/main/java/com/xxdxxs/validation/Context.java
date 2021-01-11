@@ -10,6 +10,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 上下文信息
+ *
+ * @author xxdxxs
+ */
 public class Context {
 
     private FormHandler formHandler;
@@ -22,8 +27,8 @@ public class Context {
         return message;
     }
 
-    public void setFormHandler(FormHandler formHandler){
-       this.formHandler = formHandler;
+    public void setFormHandler(FormHandler formHandler) {
+        this.formHandler = formHandler;
     }
 
     public FormHandler getFormHandler() {
@@ -37,7 +42,7 @@ public class Context {
     public String getErrorMessages() {
         String msg = "";
         try {
-            msg =  new ObjectMapper().writeValueAsString(message);
+            msg = new ObjectMapper().writeValueAsString(message);
         } catch (JsonProcessingException e) {
             msg = ValidatorEnum.ERROE_GET_EXCEPTION.getMsg();
         }

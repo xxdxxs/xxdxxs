@@ -4,10 +4,13 @@ import com.xxdxxs.validation.Validation;
 
 import java.util.Optional;
 
-public class FloatConversion implements Conversion<Float>{
+/**
+ * @author xxdxxs
+ */
+public class FloatConversion implements Conversion<Float> {
 
     @Override
-    public Optional<Float> convert(Object value){
+    public Optional<Float> convert(Object value) {
         if (Validation.isEmpty(value)) {
             return Optional.empty();
         }
@@ -20,15 +23,15 @@ public class FloatConversion implements Conversion<Float>{
         return convert(String.valueOf(value));
     }
 
-    public Optional<Float> convert(Number value){
+    public Optional<Float> convert(Number value) {
         return Optional.of(value.floatValue());
     }
 
-    public Optional<Float> convert(float value){
+    public Optional<Float> convert(float value) {
         return Optional.of(Float.valueOf(value));
     }
 
-    public Optional<Float> convert(String value){
+    public Optional<Float> convert(String value) {
         return Optional.of(Float.valueOf(value));
     }
 }

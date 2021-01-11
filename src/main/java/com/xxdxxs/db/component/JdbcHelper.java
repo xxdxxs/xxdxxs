@@ -1,6 +1,6 @@
 package com.xxdxxs.db.component;
 
-import com.xxdxxs.utils.CommonUtil;
+import com.xxdxxs.annotate.handle.UniqueHandler;
 
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
@@ -9,10 +9,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author xxdxxs
+ */
 public class JdbcHelper {
+
 
     /**
      * 数据库查询结果转换成指定类集合
+     *
      * @param resultSet
      * @param clazz
      * @param <T>
@@ -29,7 +34,6 @@ public class JdbcHelper {
                     Field[] fields = clazz.getDeclaredFields();
                     for (Field fd : fields) {
                         fd.setAccessible(true);
-                        System.out.println(fd.getName());
                         if (fd.getName().equalsIgnoreCase(resultSet.getMetaData().getColumnName(i))) {
                             fd.set(obj, resultSet.getObject(i));
                         }
@@ -37,8 +41,7 @@ public class JdbcHelper {
                     list.add((T) obj);
                 }
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
             e.printStackTrace();
@@ -47,4 +50,30 @@ public class JdbcHelper {
         }
         return list;
     }
+
+    /**
+     * 判断是否有能确定唯一一条数据的字段
+     *
+     * @param object
+     * @return
+     */
+    public static boolean isHasUniqueColumn(Object object) {
+        List<String> columns = new UniqueHandler().getUsedColumn(object.getClass());
+        if (columns.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 返回实体类能确定唯一一条数据的字段
+     *
+     * @param object
+     * @return
+     */
+    public static List<String> getUniqueColumn(Object object) {
+        List<String> columns = new UniqueHandler().getUsedColumn(object.getClass());
+        return columns;
+    }
+
 }

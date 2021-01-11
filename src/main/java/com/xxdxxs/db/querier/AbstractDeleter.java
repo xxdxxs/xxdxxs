@@ -4,20 +4,13 @@ import java.util.function.Supplier;
 
 public abstract class AbstractDeleter<R extends AbstractDeleter<R, F>, F extends Criteria<F, F>> extends AbstractRestriction<R, F> {
 
-    public String table;
+    public R from(String tableName) {
+        super.table.setTableName(tableName);
+        return (R) this;
+    }
 
     protected AbstractDeleter(Supplier<F> restricter) {
         super(restricter);
     }
 
-
-    public R from(String table){
-        this.table = table;
-        return (R)this;
-    }
-
-
-    public String getTable(){
-        return this.table;
-    }
 }

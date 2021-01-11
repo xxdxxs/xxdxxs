@@ -3,6 +3,11 @@ package com.xxdxxs.validation.rule;
 import com.xxdxxs.enums.ValidatorEnum;
 import com.xxdxxs.validation.RuleChain;
 
+/**
+ * 需要条件规则类
+ *
+ * @author xxdxxs
+ */
 public class Must extends Rule {
 
     public final static String NAME = "MUST";
@@ -12,14 +17,14 @@ public class Must extends Rule {
 
     @Override
     public void validate(RuleChain ruleChain) {
-        if(ruleChain.hasKey()){
+        if (ruleChain.hasKey()) {
             isSuccess(ruleChain);
-        }else {
+        } else {
             stop(ruleChain, ValidatorEnum.PARAM_IS_NULL);
         }
     }
 
-    public static Must getInstance(){
+    public static Must getInstance() {
         return new Must();
     }
 }

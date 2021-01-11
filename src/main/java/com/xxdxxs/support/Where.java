@@ -1,14 +1,13 @@
-package com.xxdxxs.db.jdbc;
+package com.xxdxxs.support;
 
 import com.xxdxxs.db.querier.Criterion;
 
 import java.util.*;
-import java.util.function.Supplier;
 
 /**
  * @author xxdxxs
  */
-public class Where implements FeaturedWhere<Where>{
+public class Where implements FeaturedWhere<Where> {
 
 
     private final String WHERE = " where ";
@@ -21,35 +20,35 @@ public class Where implements FeaturedWhere<Where>{
 
     private boolean isJoinByAnd = true;
 
-    public Map<String, Object> getParamValues(){
+    public Map<String, Object> getParamValues() {
         criterionList.stream().forEach(x -> {
             paramValues.putAll(x.paramValues());
         });
         return paramValues;
     }
 
-    public Where(){
+    public Where() {
 
     }
 
-    protected void setParam(Map<String, Object> map){
+    protected void setParam(Map<String, Object> map) {
         paramValues.putAll(map);
     }
 
 
     @Override
-    public String toString(){
+    public String toString() {
         StringBuffer stringBuffer = new StringBuffer();
         int i = 0;
         int j = criterionList.size();
-        for(Criterion criterion : criterionList) {
+        for (Criterion criterion : criterionList) {
             if (criterion.getValue().getClass() == NestWhere.class) {
                 NestWhere childWhere = (NestWhere) criterion.getValue();
                 stringBuffer.append(childWhere.toString());
                 setParam(childWhere.getParamValues());
             }
             stringBuffer.append(criterion.toString());
-            if(i < j-1){
+            if (i < j - 1) {
                 stringBuffer.append(linkList.get(i) ? " and " : " or ");
             }
             setParam(criterion.paramValues());
@@ -58,16 +57,16 @@ public class Where implements FeaturedWhere<Where>{
         return stringBuffer.toString();
     }
 
-    public void appendCriterion(StringBuffer stringBuffer, Criterion criterion, int index){
+    public void appendCriterion(StringBuffer stringBuffer, Criterion criterion, int index) {
         String link = " ";
-        try{
+        try {
             boolean flag = linkList.get(index);
-            if(flag){
+            if (flag) {
                 link = " and ";
-            }else {
+            } else {
                 link = " or  ";
             }
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             link = " ";
         }
         stringBuffer.append(criterion.toString()).append(link);
@@ -76,7 +75,7 @@ public class Where implements FeaturedWhere<Where>{
     @Override
     public Where where(Criterion Criterion) {
         criterionList.add(Criterion);
-        if(criterionList.size() > 1){
+        if (criterionList.size() > 1) {
             linkList.add(isJoinByAnd);
         }
         return this;

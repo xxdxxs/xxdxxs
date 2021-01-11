@@ -2,10 +2,11 @@ package com.xxdxxs.db.querier;
 
 
 import com.xxdxxs.enums.Operator;
-import com.xxdxxs.utils.CommonUtil;
+import com.xxdxxs.utils.CommonUtils;
 
 /**
  * 过滤条件连接类
+ *
  * @author xxdxxs
  */
 public class Join {
@@ -28,8 +29,8 @@ public class Join {
         this.targetColumn = targetColumn;
     }
 
-    public String on(){
-        if(!CommonUtil.isAllNotNull(targetTable, baseColumn, targetColumn)){
+    public String on() {
+        if (!CommonUtils.isAllNotNull(targetTable, baseColumn, targetColumn)) {
             return null;
         }
         StringBuffer stringBuffer = new StringBuffer();

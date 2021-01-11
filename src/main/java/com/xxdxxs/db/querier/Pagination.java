@@ -8,9 +8,9 @@ public class Pagination<E> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private long page;
+    private int page;
 
-    private long size;
+    private int size;
 
     private long startIndex;
 
@@ -22,7 +22,7 @@ public class Pagination<E> implements Serializable {
 
     private List<E> results = new ArrayList<>();
 
-    public Pagination(long page, long size) {
+    public Pagination(int page, int size) {
         this.page = page;
         this.size = size;
     }
@@ -41,10 +41,25 @@ public class Pagination<E> implements Serializable {
         return this;
     }
 
+    public int getPage() {
+        return page;
+    }
 
-    public String limit(){
-        this.startIndex = (this.page -1) * this.size;
-        String pageStr = " limit "+ startIndex + "," +size;
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public String limit() {
+        this.startIndex = (this.page - 1) * this.size;
+        String pageStr = " limit " + startIndex + "," + size;
         return pageStr;
     }
 }

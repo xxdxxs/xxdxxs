@@ -4,10 +4,13 @@ import com.xxdxxs.validation.Validation;
 
 import java.util.Optional;
 
-public class DoubleConversion implements Conversion<Double>{
+/**
+ * @author xxdxxs
+ */
+public class DoubleConversion implements Conversion<Double> {
 
     @Override
-    public Optional<Double> convert(Object value){
+    public Optional<Double> convert(Object value) {
         if (Validation.isEmpty(value)) {
             return Optional.empty();
         }
@@ -23,15 +26,15 @@ public class DoubleConversion implements Conversion<Double>{
         return convert(String.valueOf(value));
     }
 
-    public Optional<Double> convert(Number value){
+    public Optional<Double> convert(Number value) {
         return Optional.of(value.doubleValue());
     }
 
-    public Optional<Double> convert(double value){
+    public Optional<Double> convert(double value) {
         return Optional.of(Double.valueOf(value));
     }
 
-    public Optional<Double> convert(String value){
+    public Optional<Double> convert(String value) {
         return Optional.of(Double.valueOf(value));
     }
 }

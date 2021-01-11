@@ -2,6 +2,13 @@ package com.xxdxxs.support;
 
 import lombok.Data;
 
+import java.util.List;
+
+/**
+ * 表
+ *
+ * @author xxdxxs
+ */
 @Data
 public class Table {
 
@@ -18,12 +25,12 @@ public class Table {
     /**
      * 主键
      */
-    private String primaryKey;
+    private PrimaryKey primaryKey;
 
     /**
      * 查询时需要的字段
      */
-    private String needColumns;
+    private List<String> needColumns;
 
     /**
      * 对应的实体类
@@ -31,17 +38,21 @@ public class Table {
     private Class clazz;
 
 
-    public Table(){}
+    public Table() {
+    }
 
     public Table(Class clazz) {
         this.clazz = clazz;
     }
 
-    public void ofClass(Class clazz){
+
+    public void ofClass(Class clazz) {
         setClazz(clazz);
     }
 
 
-
+    public boolean hasPrimaryKey() {
+        return primaryKey.exist();
+    }
 
 }

@@ -1,7 +1,11 @@
 package com.xxdxxs.support;
 
-import com.xxdxxs.utils.StringUtils;
 
+/**
+ * 主键
+ *
+ * @author xxdxxs
+ */
 public class PrimaryKey {
 
     private String[] names;
@@ -24,13 +28,10 @@ public class PrimaryKey {
         this.isAutoGenerate = isAutoGenerate;
     }
 
-    public boolean exist(){
-        if(names == null || names.length == 0){
+    public boolean exist() {
+        if (names == null || names.length == 0) {
             return false;
         }
         return true;
     }
-
-
-
 }

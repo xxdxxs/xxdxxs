@@ -12,6 +12,7 @@ import java.util.Map;
 
 /**
  * 条件设置处理类
+ *
  * @author xxdxxs
  */
 public class Criterion {
@@ -47,7 +48,7 @@ public class Criterion {
         this.isPairable = true;
     }
 
-    public Criterion(String column, Collection<? extends Serializable> collection , Operator operator) {
+    public Criterion(String column, Collection<? extends Serializable> collection, Operator operator) {
         initialize(column, collection, operator);
         this.isList = true;
     }
@@ -70,35 +71,49 @@ public class Criterion {
         return operator;
     }
 
-    private String buildCriteria(){
+    private String buildCriteria() {
         StringBuffer builder = new StringBuffer();
-        if(this.column == null){
+        if (this.column == null) {
             return "";
         }
         String mark = this.column.replaceAll("\\.", "");
-        if(isPairable){
+        if (isPairable) {
             builder.append(column).append(Operator.GREATER_THAN_OR_EQUAL.getSign()).append(" :left" + mark).append(" and ")
                     .append(column).append(Operator.LESS_THAN_OR_EQUAL.getSign()).append(" :right" + mark);
-            paramMap.put("left" + mark, ((Pair)this.value).getLeft());
-            paramMap.put("right" + mark, ((Pair)this.value).getRight());
-        }
-        else if(isList){
+            paramMap.put("left" + mark, ((Pair) this.value).getLeft());
+            paramMap.put("right" + mark, ((Pair) this.value).getRight());
+        } else if (isList) {
             builder.append(column).append(operator.getSign()).append(" (:" + mark + ") ");
             paramMap.put(mark, value);
-        }else{
-            builder.append(column).append(operator.getSign()).append(" :" + mark);
-            paramMap.put(mark, value);
+        } else {
+            if (operator.isLessRange()) {
+                builder.append(column).append(operator.getSign()).append(" :less" + mark);
+                paramMap.put("less" + mark, value);
+            } else if (operator.isMoreRange()) {
+                builder.append(column).append(operator.getSign()).append(" :more" + mark);
+                paramMap.put("more" + mark, value);
+            } else {
+                builder.append(column).append(operator.getSign()).append(" :" + mark);
+                if (operator == Operator.LIKE) {
+                    value = "%" + value + "%";
+                } else if (operator == Operator.START_WITH) {
+                    value = value + "%";
+                } else if (operator == Operator.END_WITH) {
+                    value = "%" + value;
+                }
+                paramMap.put(mark, value);
+            }
         }
         return builder.toString();
     }
 
-    public Map<String, Object> paramValues(){
+    public Map<String, Object> paramValues() {
         return this.paramMap;
     }
 
 
     @Override
-    public String toString(){
+    public String toString() {
         return buildCriteria();
     }
 

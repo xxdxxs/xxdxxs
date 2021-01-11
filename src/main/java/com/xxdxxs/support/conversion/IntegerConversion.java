@@ -2,6 +2,9 @@ package com.xxdxxs.support.conversion;
 
 import java.util.Optional;
 
+/**
+ * @author xxdxxs
+ */
 public class IntegerConversion implements Conversion<Integer> {
 
     @Override

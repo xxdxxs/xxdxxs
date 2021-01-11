@@ -1,10 +1,15 @@
 package com.xxdxxs.validation;
 
 
-import com.xxdxxs.validation.Validator;
 import com.xxdxxs.validation.rule.Rule;
 import com.xxdxxs.validation.rule.Ruler;
 
+
+/**
+ * 规则责任链
+ *
+ * @author xxdxxs
+ */
 public class RuleChain {
 
     private String key;
@@ -17,7 +22,7 @@ public class RuleChain {
 
     private Rule lastRule;
 
-    public RuleChain(){
+    public RuleChain() {
 
     }
 
@@ -28,13 +33,13 @@ public class RuleChain {
 
     }
 
-    public void addRule(Rule rule){
-        if(this.firstRule == null){
+    public void addRule(Rule rule) {
+        if (this.firstRule == null) {
             this.firstRule = rule;
         }
-        if(this.lastRule == null){
+        if (this.lastRule == null) {
             this.lastRule = this.firstRule;
-        }else {
+        } else {
             this.lastRule.setNextRule(rule);
             this.lastRule = rule;
         }
@@ -46,16 +51,16 @@ public class RuleChain {
         }
     }
 
-    public boolean hasKey(){
+    public boolean hasKey() {
         return validator.getContext().getFormHandler().getData().containsKey(key);
     }
 
 
-    public Ruler getNextRuler(String key){
+    public Ruler getNextRuler(String key) {
         return this.getNextRuler(key, null);
     }
 
-    public Ruler getNextRuler(String key, String name){
+    public Ruler getNextRuler(String key, String name) {
         return this.validator.set(key, name);
     }
 
@@ -72,7 +77,7 @@ public class RuleChain {
         return validator;
     }
 
-    public Validator end(){
+    public Validator end() {
         return this.validator;
     }
 

@@ -7,13 +7,11 @@ public class Sometimes extends Rule {
 
     public final static String NAME = RuleType.SOMETIMES.getName();
 
-
-
-    public Sometimes(){
+    public Sometimes() {
     }
 
 
-    public static Sometimes getInstance(){
+    public static Sometimes getInstance() {
         return new Sometimes();
     }
 

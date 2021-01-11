@@ -7,10 +7,10 @@ public enum DataType {
     STRING("string") {
         @Override
         public Boolean validate(Object object) {
-           return Validation.isString(object);
+            return Validation.isString(object);
         }
     },
-    DOUBLE("double"){
+    DOUBLE("double") {
         @Override
         public Boolean validate(Object object) {
             return Validation.isDouble(object);
@@ -52,7 +52,8 @@ public enum DataType {
         public Boolean validate(Object object) {
             return Validation.isMap(object);
         }
-    },;
+    },
+    ;
 
     private String code;
 

@@ -1,6 +1,9 @@
 package com.xxdxxs.db.querier;
 
-public abstract class AbstractAssignment<T extends AbstractAssignment<T>> implements Comparable<T>{
+/**
+ * @author xxdxxs
+ */
+public abstract class AbstractAssignment<T extends AbstractAssignment<T>> implements Comparable<T> {
 
     protected String name;
 

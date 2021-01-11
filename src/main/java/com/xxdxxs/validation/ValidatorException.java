@@ -1,4 +1,4 @@
-package com.xxdxxs.exception;
+package com.xxdxxs.validation;
 
 public class ValidatorException {
 
@@ -21,7 +21,7 @@ public class ValidatorException {
         this.name = name;
     }
 
-    public String getMsg(){
+    public String getMsg() {
         this.msg = this.key + ": " + this.name;
         return msg;
     }

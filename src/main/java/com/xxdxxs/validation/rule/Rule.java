@@ -9,27 +9,33 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
+/**
+ * 规则抽象类
+ *
+ * @author xxdxxs
+ */
 public abstract class Rule {
 
     public Rule nextRule;
 
-    public Rule(){}
+    public Rule() {
+    }
 
-    public void setNextRule(Rule rule){
+    public void setNextRule(Rule rule) {
         this.nextRule = rule;
     }
 
     public abstract void validate(RuleChain ruleChain);
 
-    public void stop(RuleChain ruleChain, ValidatorEnum validatorEnum){
+    public void stop(RuleChain ruleChain, ValidatorEnum validatorEnum) {
         isFail(ruleChain, validatorEnum);
     }
 
-    public void isSuccess(RuleChain chain){
+    public void isSuccess(RuleChain chain) {
         executeNext(chain);
     }
 
-    public void isFail(RuleChain ruleChain, ValidatorEnum validatorEnum){
+    public void isFail(RuleChain ruleChain, ValidatorEnum validatorEnum) {
         Validator validator = ruleChain.getValidator();
         Map<String, List<String>> messages = validator.getContext().getMessage();
         Map<RuleChain, Boolean> results = validator.getContext().getResults();
@@ -41,8 +47,8 @@ public abstract class Rule {
         executeNext(ruleChain);
     }
 
-    public void executeNext(RuleChain chain){
-        if(nextRule != null){
+    public void executeNext(RuleChain chain) {
+        if (nextRule != null) {
             this.nextRule.validate(chain);
         }
     }
