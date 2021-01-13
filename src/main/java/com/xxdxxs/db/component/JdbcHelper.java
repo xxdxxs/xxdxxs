@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * JDBC操作辅助类
  * @author xxdxxs
  */
 public class JdbcHelper {
@@ -21,7 +22,7 @@ public class JdbcHelper {
      * @param resultSet
      * @param clazz
      * @param <T>
-     * @return
+     * @return <T>
      */
     public static <T> List<T> resultSetToList(ResultSet resultSet, Class<T> clazz) {
         List<T> list = new ArrayList<T>();
@@ -55,7 +56,7 @@ public class JdbcHelper {
      * 判断是否有能确定唯一一条数据的字段
      *
      * @param object
-     * @return
+     * @return boolean
      */
     public static boolean isHasUniqueColumn(Object object) {
         List<String> columns = new UniqueHandler().getUsedColumn(object.getClass());
@@ -69,7 +70,7 @@ public class JdbcHelper {
      * 返回实体类能确定唯一一条数据的字段
      *
      * @param object
-     * @return
+     * @return List<String>
      */
     public static List<String> getUniqueColumn(Object object) {
         List<String> columns = new UniqueHandler().getUsedColumn(object.getClass());
