@@ -5,6 +5,7 @@ import com.xxdxxs.support.Column;
 import java.util.*;
 
 /**
+ * 抽象新增类
  * @author xxdxxs
  */
 public abstract class AbstractCreater<R extends AbstractCreater<R, V>, V extends Column> extends AbstractSpace<R> implements Setter<R, V> {
