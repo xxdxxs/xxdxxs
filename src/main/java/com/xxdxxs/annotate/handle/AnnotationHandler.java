@@ -7,7 +7,6 @@ import java.util.List;
 
 /**
  * 自定义注解处理公共父类
- *
  * @author xxdxxs
  */
 public abstract class AnnotationHandler<T extends Annotation> {
@@ -17,7 +16,7 @@ public abstract class AnnotationHandler<T extends Annotation> {
      *
      * @param t
      * @param targetClazz
-     * @return
+     * @return T extends Annotation
      */
     public <T extends Annotation> List<String> getUsedColumn(Class<T> t, Class targetClazz) {
         List<String> columns = new ArrayList<>();
