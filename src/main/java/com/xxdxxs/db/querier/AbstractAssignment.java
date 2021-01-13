@@ -1,6 +1,7 @@
 package com.xxdxxs.db.querier;
 
 /**
+ * 列抽象父类
  * @author xxdxxs
  */
 public abstract class AbstractAssignment<T extends AbstractAssignment<T>> implements Comparable<T> {
