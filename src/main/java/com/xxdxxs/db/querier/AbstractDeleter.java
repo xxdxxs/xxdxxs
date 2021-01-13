@@ -2,6 +2,10 @@ package com.xxdxxs.db.querier;
 
 import java.util.function.Supplier;
 
+/**
+ * 抽象删除类
+ * @author xxdxxs
+ */
 public abstract class AbstractDeleter<R extends AbstractDeleter<R, F>, F extends Criteria<F, F>> extends AbstractRestriction<R, F> {
 
     public R from(String tableName) {
