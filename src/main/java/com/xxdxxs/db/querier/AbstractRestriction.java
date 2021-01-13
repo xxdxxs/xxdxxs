@@ -8,7 +8,6 @@ import java.util.function.Supplier;
 
 /**
  * 抽象条件设置类
- *
  * @author xxdxxs
  */
 public abstract class AbstractRestriction<
