@@ -16,13 +16,13 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-
 import java.io.Serializable;
 import java.sql.Types;
 import java.util.*;
 import java.util.function.Function;
 
 /**
+ * jdbc操作类
  * @author xxdxxs
  */
 public abstract class JdbcDao<E extends Entity> {
