@@ -8,13 +8,16 @@ import java.util.*;
 
 /**
  * 可用操作符注解
- *
  * @author xxdxxs
  */
 public class AbleOperateHandler<E> {
     private static final int INIT_SIZE = 16;
 
 
+    /**
+     * @param clazz
+     * @return Map<String, List<String>>
+     */
     public Map<String, List<String>> handle(Class clazz) {
         Map<String, List<String>> map = new HashMap<>(INIT_SIZE);
         Field[] fields = clazz.getDeclaredFields();
