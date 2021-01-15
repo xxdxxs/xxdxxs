@@ -13,9 +13,10 @@ import com.xxdxxs.utils.MapUtils;
 import com.xxdxxs.utils.StringUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+
+import javax.sql.DataSource;
 import java.io.Serializable;
 import java.sql.Types;
 import java.util.*;
@@ -25,7 +26,7 @@ import java.util.function.Function;
  * jdbc操作类
  * @author xxdxxs
  */
-public abstract class JdbcDao<E extends Entity> {
+public abstract class JdbcDao<E extends Entity> extends AbstractDao<JdbcTemplate> {
 
     private Table table;
 
@@ -33,13 +34,25 @@ public abstract class JdbcDao<E extends Entity> {
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+    private DataSource dataSource;
+
     public JdbcDao(Class<E> clazz, String tableName) {
         table = new Table();
         this.table.setTableName(tableName);
         this.table.ofClass(clazz);
     }
 
+    public void setTemplate(DataSource dataSource) {
+        this.dataSource = dataSource;
+        this.jdbcTemplate = JdbcTemplate.of(dataSource);
+        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+        setTemplate(jdbcTemplate);
+    }
+
+
+    @Override
     public void setTemplate(JdbcTemplate jdbcTemplate) {
+        super.setTemplate(jdbcTemplate);
         this.jdbcTemplate = jdbcTemplate;
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
     }
