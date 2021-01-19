@@ -73,14 +73,5 @@ public class Column extends AbstractAssignment<Column> {
         return TYPES.getOrDefault(clazz, Types.OTHER);
     }
 
-   /* public static int getColumnType(Object object) {
-        for (Class clazz : TYPES.keySet()) {
-            if(clazz.isInstance(object)){
-                return TYPES.get(clazz);
-            }
-        }
-        return Types.OTHER;
-    }*/
-
 
 }
