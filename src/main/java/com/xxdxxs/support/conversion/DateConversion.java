@@ -3,7 +3,8 @@ package com.xxdxxs.support.conversion;
 import com.xxdxxs.utils.ConvertUtil;
 import com.xxdxxs.utils.DateUtils;
 import com.xxdxxs.validation.Validation;
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -11,6 +12,8 @@ import java.util.Optional;
 
 public class DateConversion implements Conversion<Date> {
     private static final String DEFAULT_DATAFORMAT = "yyyy-MM-dd HH:mm:ss";
+
+    private static final String LOCAL_TIME_DATAFORMAT = "yyyy-MM-dd";
 
     @Override
     public Optional<Date> convert(Object value) {
@@ -29,13 +32,25 @@ public class DateConversion implements Conversion<Date> {
         return convert(String.valueOf(value));
     }
 
-    public Instant convertInstant(String value) {
-        return Instant.parse(value);
-    }
+    /*
+        public Instant convertInstant(String value) {
+            return Instant.parse(value);
+        }
+    */
 
-    public Optional<Date> convert(String value) {
-        Instant instant = convertInstant(value);
-        Date date = new Date(instant.toEpochMilli());
+    public Optional<Date> convert(String value){
+        Date date;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DEFAULT_DATAFORMAT);
+        try{
+            date = simpleDateFormat.parse(value);
+        }catch (ParseException e) {
+            try {
+                date = new SimpleDateFormat(LOCAL_TIME_DATAFORMAT).parse(value);
+            }catch (ParseException e1) {
+                e1.printStackTrace();
+                return null;
+            }
+        }
         return Optional.of(date);
     }
 
@@ -82,4 +97,5 @@ public class DateConversion implements Conversion<Date> {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
         return dateTimeFormatter.format(localDate);
     }
+
 }
