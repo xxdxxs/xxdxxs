@@ -1,6 +1,7 @@
 package com.xxdxxs.db.component;
 
 import com.xxdxxs.annotate.handle.UniqueHandler;
+import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
@@ -8,6 +9,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * JDBC操作辅助类
@@ -77,4 +80,29 @@ public class JdbcHelper {
         return columns;
     }
 
+
+    /**
+     * value不为空执行回调
+     * @param key
+     * @param value
+     * @param biConsumer
+     * @param <T>
+     */
+    public static <T> void ifPresent(String key, T value, BiConsumer<String, T> biConsumer) {
+        if (!StringUtils.isEmpty(value)) {
+            biConsumer.accept(key, value);
+        }
+    }
+
+    /**
+     * value不为空执行回调
+     * @param value
+     * @param consumer
+     * @param <T>
+     */
+    public static <T> void ifPresent(T value, Consumer<T> consumer) {
+        if (!StringUtils.isEmpty(value)) {
+            consumer.accept(value);
+        }
+    }
 }
