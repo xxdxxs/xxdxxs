@@ -3,6 +3,7 @@ package com.xxdxxs.db.querier;
 import com.xxdxxs.support.Table;
 
 /**
+ * 抽象空间，辅助操作
  * @author xxdxxs
  */
 public abstract class AbstractSpace<E extends AbstractSpace> {

@@ -117,7 +117,5 @@ public class Criterion {
         return buildCriteria();
     }
 
-    public static void main(String[] args) {
 
-    }
 }

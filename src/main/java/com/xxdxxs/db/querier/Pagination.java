@@ -4,6 +4,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 分页类
+ *
+ * @author xxdxxs
+ */
 public class Pagination<E> implements Serializable {
 
     private static final long serialVersionUID = 1L;

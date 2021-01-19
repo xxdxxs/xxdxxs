@@ -19,7 +19,6 @@ public interface Setter<R, V extends Column> {
         if (!ObjectUtils.isEmpty(variables)) {
             variables.forEach(this::set);
         }
-
         return (R) this;
     }
 

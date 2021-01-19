@@ -11,7 +11,7 @@ import java.util.Map;
 
 
 /**
- * 属性设置接口类
+ * 属性设置接口
  *
  * @author xxdxxs
  */

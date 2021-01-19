@@ -7,7 +7,6 @@ import java.util.function.Supplier;
 
 /**
  * 抽象更新类
- *
  * @author xxdxxs
  */
 public abstract class AbstractUpdater<R extends AbstractUpdater<R, F, V>, F extends Criteria<F, F>, V extends Column>

@@ -3,13 +3,17 @@ package com.xxdxxs.db.querier;
 import com.xxdxxs.support.NestWhere;
 import com.xxdxxs.enums.Operator;
 import org.apache.commons.lang3.tuple.Pair;
-
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Consumer;
 
+/**
+ * 过滤条件接口
+ * @author xxdxxs
+ */
 public interface Criteria<T, A> {
+
     T where(Criterion Criterion);
 
     default T where(Consumer<NestWhere> callback) {

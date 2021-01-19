@@ -6,6 +6,11 @@ import com.xxdxxs.utils.StringUtils;
 
 import java.util.function.Supplier;
 
+
+/**
+ * 抽象查询类
+ * @author xxdxxs
+ */
 public abstract class AbstractSelect<R extends AbstractSelect<R, F>, F extends Criteria<F, F>> extends AbstractRestriction<R, F> {
 
 
