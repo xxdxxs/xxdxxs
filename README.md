@@ -17,16 +17,29 @@ validator.isValid()
   string()，date()等，代表设定参数的数据类型
   然后执行 validator.isValid(),  结果为boolean
 
+```java
+ String str = "{\"owner\":\"小李飞刀\", \"age\": 23, \"startTime\": \"2021-01-05 23:59:50\"}";
+        Validator validator = new Validator(FormHandler.ofJson(str));
+        validator.set("age", "年龄").must().integer().larger(23, true)
+                .set("startTime", "开始查询时间").must().beforeOrEqual(DateUtils.parseString("2021-01-05 														23:59:54"), "yyyy-MM-dd HH:mm:ss")
+                .end();
+```
+
+可以校验参数值的大小数值和时间类型）是否在指定的范围内
+
 
 
 ```java
 /**获取或新建formHandler**/
 FormHandler formHandler = validator.getForm();
 FormHandler formHandler = FormHandler.ofJson(str);
+FormHandler formHandler = FormHandler.ofEntity(entity);
 
 /**获取参数的键值对**/
 formHandler.getData()
 ```
+
+也可以直接实例化，通过set方法放入数据
 
 
 
@@ -48,7 +61,9 @@ ublic class TestDao extends JdbcDao<Entity> {
 
 （1）要使用的dao继承JdbcDao，传入表对应的entity， 构造方法设置entity，和对应的要操作的表名
 
-（2）设置JdbcTemplate，目前暂时只支持传入spring的JdbcTemplate
+（2）复写父类方法，设置JdbcTemplate
+
+  (3)   还可以通过传入dataSource，或者创建一个ConnectInfo对象，放入数据源的相关信息，设置JdbcTemplate
 
 
 
@@ -189,7 +204,7 @@ testDao.count(select.count());
 
    
 
-   3.3
+   3.3 用注解Unique，标注在可以确定唯一数据的列上，可以是多个字段
 
    ```java
    testDao().updateByUnique(Entity)
@@ -206,6 +221,28 @@ testDao.count(select.count());
    ```
 
    根据可确定唯一数据的字段进行更新，无则插入，有就更新
+
+   3.5 更新自增类型的字段
+
+   场景：如重试次数这一类字段，每次更新该行数据都需要加一，可以用AutoCalculate类包装需要加减的数值，进行更新
+
+   ```java
+    Update update = Update.of()
+                  .set("age", new AutoCalculate( 10))
+                  .whereEqual("name", "XXDXXS");
+   ```
+
+   也可以用‘INCREMENT’， ’DECREMENT‘，显示表示加减
+
+   ```java
+    Update update = Update.of()
+                  .set("age", new AutoCalculate(AutoCalculate.Sign.INCREMENT,10))
+                  .whereEqual("name", "XXDXXS");
+   ```
+
+   
+
+​	
 
 4.新增
 
