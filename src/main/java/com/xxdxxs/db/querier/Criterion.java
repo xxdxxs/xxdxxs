@@ -35,6 +35,11 @@ public class Criterion {
 
     private boolean isUseAlias = false;
 
+    /**
+     * 是否属于子查询
+     **/
+    private boolean isOfNestSelect = false;
+
     public Criterion(Where where) {
         initialize(null, where, null);
     }
@@ -77,6 +82,10 @@ public class Criterion {
             return "";
         }
         String mark = this.column.replaceAll("\\.", "");
+        /**是自查询就加一个标识，与外层查询条件区分**/
+        if (isOfNestSelect) {
+            mark = "nest" + mark;
+        }
         if (isPairable) {
             builder.append(column).append(Operator.GREATER_THAN_OR_EQUAL.getSign()).append(" :left" + mark).append(" and ")
                     .append(column).append(Operator.LESS_THAN_OR_EQUAL.getSign()).append(" :right" + mark);
@@ -117,5 +126,7 @@ public class Criterion {
         return buildCriteria();
     }
 
-
+    public void ofNestSelect() {
+        this.isOfNestSelect = true;
+    }
 }

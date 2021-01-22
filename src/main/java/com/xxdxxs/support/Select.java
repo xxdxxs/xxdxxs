@@ -2,9 +2,13 @@ package com.xxdxxs.support;
 
 import com.xxdxxs.db.querier.AbstractSelect;
 import com.xxdxxs.db.querier.Join;
+import com.xxdxxs.exception.JdbcException;
+import com.xxdxxs.exception.enums.JdbcErrorMsg;
 import com.xxdxxs.utils.StringUtils;
 
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * 查询
@@ -16,6 +20,8 @@ public class Select extends AbstractSelect<Select, Where> implements FeaturedWhe
     private final String BLANK_SPACE = " ";
     private Set<String> groups = new LinkedHashSet<>();
     private Map<String, Boolean> sorts = new LinkedHashMap<>();
+    private boolean isNestSelect = false;
+    private Select[] nestSelects = new Select[1];
 
     public Select() {
         super(Where::new);
@@ -44,6 +50,21 @@ public class Select extends AbstractSelect<Select, Where> implements FeaturedWhe
     public Select from(String table, String alias) {
         super.table.setTableName(table);
         super.table.setAlias(alias);
+        return this;
+    }
+
+    public Select from(Select nestSelect) {
+        /**设置子查询**/
+        setNestSelect(nestSelect);
+        this.nestSelects[0] = nestSelect;
+        return this;
+    }
+
+    public Select from(Supplier<Select> supplier) {
+        /**设置子查询**/
+        Select nestSelect = supplier.get();
+        setNestSelect(nestSelect);
+        this.nestSelects[0] = nestSelect;
         return this;
     }
 
@@ -101,6 +122,16 @@ public class Select extends AbstractSelect<Select, Where> implements FeaturedWhe
         return getRestriction().getParamValues();
     }
 
+    public void setNestSelect(Select nestSelect){
+        this.isNestSelect = true;
+        nestSelect.getRestriction().ofNestSelect();
+    }
+
+    public boolean isNestSelect(){
+        return isNestSelect;
+    }
+
+
     @Override
     public String toString() {
         StringBuffer stringBuffer = new StringBuffer(" select ");
@@ -110,7 +141,19 @@ public class Select extends AbstractSelect<Select, Where> implements FeaturedWhe
         } else {
             stringBuffer.append(StringUtils.listToString(needColumns));
         }
-        stringBuffer.append(" from ").append(table.getTableName());
+        /**判断是否有子查询**/
+        if (isNestSelect) {
+            Select nestSelect = nestSelects[0];
+            stringBuffer.append(" from ( ");
+            stringBuffer.append(nestSelect.toString() + " ) " );
+            if (StringUtils.isEmpty(nestSelect.getTable().getTableName())) {
+                throw new JdbcException(JdbcErrorMsg.TABLENAME_IS_NULL);
+            }
+            stringBuffer.append(" nest" + nestSelect.getTable().getTableName());
+            this.getParams().putAll(nestSelect.getParams());
+        } else {
+            stringBuffer.append(" from ").append(table.getTableName());
+        }
         if (!StringUtils.isEmpty(table.getAlias())) {
             stringBuffer.append(BLANK_SPACE + table.getAlias());
         }
@@ -180,10 +223,6 @@ public class Select extends AbstractSelect<Select, Where> implements FeaturedWhe
             return stringBuffer.toString();
         }
 
-    }
-
-    public static void main(String[] args) {
-        //  System.out.println(new Where<>(new Select()) instanceof NestWhere);
     }
 
 

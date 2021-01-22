@@ -5,6 +5,7 @@ import com.xxdxxs.db.querier.Criterion;
 import java.util.*;
 
 /**
+ * 筛选条件
  * @author xxdxxs
  */
 public class Where implements FeaturedWhere<Where> {
@@ -19,6 +20,8 @@ public class Where implements FeaturedWhere<Where> {
     protected Map<String, Object> paramValues = new LinkedHashMap<>();
 
     private boolean isJoinByAnd = true;
+
+    private boolean isOfNestSelect = false;
 
     public Map<String, Object> getParamValues() {
         criterionList.stream().forEach(x -> {
@@ -42,6 +45,9 @@ public class Where implements FeaturedWhere<Where> {
         int i = 0;
         int j = criterionList.size();
         for (Criterion criterion : criterionList) {
+            if (isOfNestSelect) {
+                criterion.ofNestSelect();
+            }
             if (criterion.getValue().getClass() == NestWhere.class) {
                 NestWhere childWhere = (NestWhere) criterion.getValue();
                 stringBuffer.append(childWhere.toString());
@@ -73,8 +79,11 @@ public class Where implements FeaturedWhere<Where> {
     }
 
     @Override
-    public Where where(Criterion Criterion) {
-        criterionList.add(Criterion);
+    public Where where(Criterion criterion) {
+        if (isOfNestSelect) {
+            criterion.ofNestSelect();
+        }
+        criterionList.add(criterion);
         if (criterionList.size() > 1) {
             linkList.add(isJoinByAnd);
         }
@@ -110,5 +119,9 @@ public class Where implements FeaturedWhere<Where> {
     public Where and() {
         isJoinByAnd = true;
         return this;
+    }
+
+    public void ofNestSelect(){
+        this.isOfNestSelect = true;
     }
 }
