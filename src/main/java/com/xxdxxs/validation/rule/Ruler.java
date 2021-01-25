@@ -5,6 +5,7 @@ import com.xxdxxs.validation.RuleChain;
 import com.xxdxxs.validation.Validator;
 
 import java.util.Date;
+import java.util.function.Consumer;
 
 /**
  * 校验的规则方法定义
@@ -12,7 +13,7 @@ import java.util.Date;
  */
 public class Ruler {
 
-    private RuleChain ruleChain;
+    protected RuleChain ruleChain;
 
     public Ruler(RuleChain ruleChain) {
         this.ruleChain = ruleChain;
@@ -124,4 +125,10 @@ public class Ruler {
     public Validator end() {
         return this.ruleChain.end();
     }
+
+    public Ruler addExpandRule(Rule rule){
+        ruleChain.addRule(rule);
+        return this;
+    }
+
 }

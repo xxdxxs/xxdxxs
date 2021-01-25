@@ -4,7 +4,7 @@ import com.xxdxxs.enums.ValidatorEnum;
 import com.xxdxxs.validation.RuleChain;
 
 /**
- * 需要条件规则类
+ * 必要条件规则类
  *
  * @author xxdxxs
  */

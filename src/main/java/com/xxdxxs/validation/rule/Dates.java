@@ -2,7 +2,6 @@ package com.xxdxxs.validation.rule;
 
 import com.xxdxxs.enums.ValidatorEnum;
 import com.xxdxxs.utils.ConvertUtil;
-import com.xxdxxs.utils.JsonUtils;
 import com.xxdxxs.validation.RuleChain;
 import com.xxdxxs.validation.Validator;
 import org.springframework.util.Assert;
@@ -74,9 +73,7 @@ public class Dates extends Rule {
 
     @Override
     public void validate(RuleChain ruleChain) {
-        String key = ruleChain.getKey();
-        Validator validator = ruleChain.getValidator();
-        Object object = validator.getContext().getFormHandler().getData().get(key);
+        Object object = getValue(ruleChain);
         Optional<Date> value = ConvertUtil.DATE.convert(object);
         if (value.isPresent() && validate(value.get())) {
             isSuccess(ruleChain);

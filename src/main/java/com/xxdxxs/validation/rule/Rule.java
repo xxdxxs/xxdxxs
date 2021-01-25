@@ -1,12 +1,15 @@
 package com.xxdxxs.validation.rule;
 
 import com.xxdxxs.enums.ValidatorEnum;
+import com.xxdxxs.utils.ConvertUtil;
 import com.xxdxxs.validation.RuleChain;
+import com.xxdxxs.validation.Validation;
 import com.xxdxxs.validation.Validator;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -53,7 +56,19 @@ public abstract class Rule {
         }
     }
 
-    private void execute(RuleChain chain, Supplier<Boolean> callback) {
+    protected Object getValue(RuleChain ruleChain) {
+        String key = ruleChain.getKey();
+        Validator validator = ruleChain.getValidator();
+        Object object = validator.getContext().getFormHandler().getData().get(key);
+        return object;
+    }
 
+    protected void execute(RuleChain ruleChain, Object value, Function<Object, Boolean> function) {
+        Boolean flag = function.apply(value);
+        if (flag) {
+            isSuccess(ruleChain);
+        } else {
+            stop(ruleChain, ValidatorEnum.PARAM_IS_VAILD);
+        }
     }
 }

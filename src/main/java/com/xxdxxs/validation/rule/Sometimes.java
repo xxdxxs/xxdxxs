@@ -3,6 +3,10 @@ package com.xxdxxs.validation.rule;
 import com.xxdxxs.enums.RuleType;
 import com.xxdxxs.validation.RuleChain;
 
+/**
+ * 非必要
+ * @author xxdxxs
+ */
 public class Sometimes extends Rule {
 
     public final static String NAME = RuleType.SOMETIMES.getName();

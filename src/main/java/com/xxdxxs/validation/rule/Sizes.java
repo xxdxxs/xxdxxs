@@ -67,9 +67,7 @@ public class Sizes extends Rule {
 
     @Override
     public void validate(RuleChain ruleChain) {
-        String key = ruleChain.getKey();
-        Validator validator = ruleChain.getValidator();
-        Object value = validator.getContext().getFormHandler().getData().get(key);
+        Object value = getValue(ruleChain);
         if (Validation.isNumber(value) && NumberUtils.between((Number) value, min, max, isIncluded)) {
             isSuccess(ruleChain);
         } else {
