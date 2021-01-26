@@ -2,6 +2,11 @@ package com.xxdxxs.enums;
 
 import com.xxdxxs.validation.Validation;
 
+/**
+ * 定义校验的数据类型
+ * @author xxdxxs
+ */
+
 public enum DataType {
 
     STRING("string") {
@@ -10,13 +15,6 @@ public enum DataType {
             return Validation.isString(object);
         }
     },
-    DOUBLE("double") {
-        @Override
-        public Boolean validate(Object object) {
-            return Validation.isDouble(object);
-        }
-    },
-
     NUMBER("number") {
         @Override
         public Boolean validate(Object object) {
