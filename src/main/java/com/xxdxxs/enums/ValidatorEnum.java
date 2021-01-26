@@ -1,5 +1,9 @@
 package com.xxdxxs.enums;
 
+/**
+ * 校验异常信息
+ * @author xxdxxs
+ */
 public enum ValidatorEnum {
     PARAM_IS_NULL("100001", "参数为空"),
     PARAM_IS_VAILD("100002", "参数无效"),
