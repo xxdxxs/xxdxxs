@@ -3,6 +3,7 @@ package com.xxdxxs.db.querier;
 
 import com.xxdxxs.enums.Operator;
 import com.xxdxxs.utils.CommonUtils;
+import com.xxdxxs.utils.StringUtils;
 
 /**
  * 过滤条件连接类
@@ -30,7 +31,7 @@ public class Join {
     }
 
     public String on() {
-        if (!CommonUtils.isAllNotNull(targetTable, baseColumn, targetColumn)) {
+        if (!StringUtils.isAllNotEmpty(targetTable, baseColumn, targetColumn)) {
             return null;
         }
         StringBuffer stringBuffer = new StringBuffer();

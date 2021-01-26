@@ -1,6 +1,5 @@
 package com.xxdxxs.exception;
 
-import java.text.MessageFormat;
 
 /**
  * 操作数据库异常类
@@ -43,5 +42,5 @@ public abstract class DalException extends RuntimeException {
     public String toString() {
         return MessageFormat.format("{0}[{1}]", this.code, this.msg);
     }
-*/
+    */
 }

@@ -59,11 +59,6 @@ public class ConditionFilter extends ConditionFilterSupport<ConditionFilter> {
         return String.join(",", needColumns);
     }
 
-    public static void main(String[] args) {
-        ConditionFilter filter = ConditionFilter.of();
-        filter.setNeedColumns("asd", "dasd", "rrre");
-        System.out.println(filter.getNeedColumnsAsString());
-    }
 
     /**
      * 等于
@@ -186,6 +181,28 @@ public class ConditionFilter extends ConditionFilterSupport<ConditionFilter> {
         return set(name, Operator.IN, Arrays.asList(values));
     }
 
+    /**
+     * 不在范围内
+     *
+     * @param name
+     * @param values
+     * @return
+     */
+    public ConditionFilter notIn(String name, Collection<? extends Serializable> values) {
+        return set(name, Operator.NOT_IN, values);
+    }
+
+
+    /**
+     * 不在范围内
+     *
+     * @param name
+     * @param values
+     * @return
+     */
+    public ConditionFilter notIn(String name, Serializable... values) {
+        return set(name, Operator.NOT_IN, Arrays.asList(values));
+    }
 
     public static class Data implements Serializable {
         private String name;
