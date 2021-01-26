@@ -2,7 +2,6 @@ package com.xxdxxs.validation;
 
 import com.xxdxxs.service.FormHandler;
 import com.xxdxxs.validation.rule.Ruler;
-import org.springframework.util.Assert;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -49,7 +48,6 @@ public class Validator {
     }
 
     public Validator setForm(FormHandler formHandler) {
-        Assert.notNull(formHandler);
         this.context.setFormHandler(formHandler);
         return this;
     }
@@ -105,15 +103,4 @@ public class Validator {
     public Validator end() {
         return this;
     }
-
-
-    /*public static void main(String[] args) {
-        Context context = new Context();
-        context.getResults().put(new RuleChain(), true);
-        context.getResults().put(new RuleChain(), true);
-        context.getResults().put(new RuleChain(), false);
-        context.getResults().put(new RuleChain(), true);
-        boolean pass = context.getResults().values().stream().allMatch(result -> result == true);
-        System.out.println("pass   = " + pass);
-    }*/
 }

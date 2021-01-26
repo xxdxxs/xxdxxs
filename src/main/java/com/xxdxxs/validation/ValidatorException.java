@@ -1,5 +1,9 @@
 package com.xxdxxs.validation;
 
+/**
+ * 校验异常类
+ * @author xxdxxs
+ */
 public class ValidatorException {
 
     private String key;
@@ -22,7 +26,7 @@ public class ValidatorException {
     }
 
     public String getMsg() {
-        this.msg = this.key + ": " + this.name;
+        this.msg = this.key + " : " + this.name;
         return msg;
     }
 }
