@@ -8,6 +8,7 @@ import java.util.List;
 
 
 /**
+ * 更新
  * @author xxdxxs
  */
 public class Update extends AbstractUpdater<Update, Where, Column> implements FeaturedSetter<Update>, FeaturedWhere<Update> {
