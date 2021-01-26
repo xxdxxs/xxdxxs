@@ -35,6 +35,11 @@ public class DoubleConversion implements Conversion<Double> {
     }
 
     public Optional<Double> convert(String value) {
-        return Optional.of(Double.valueOf(value));
+        try {
+            return Optional.of(Double.valueOf(value));
+        } catch (NumberFormatException e) {
+            return Optional.empty();
+        }
+
     }
 }
