@@ -25,7 +25,39 @@ validator.isValid()
                 .end();
 ```
 
-可以校验参数值的大小(数值和时间类型）是否在指定的范围内
+可以校验参数值的大小（数值和时间类型）是否在指定的范围内
+
+
+
+可以通过addExpandRule方法自定义规则校验参数是否符合要求
+
+```java
+ Validator validator = new Validator(FormHandler.ofJson(str));
+        validator.set("age", "年龄").must().integer().larger(23, true)
+                .set("phone", "电话").date().must().addExpandRule(PhoneRule.getInstance())
+                .end();
+```
+
+PhoneRule则为自定义的规则类，继承Rule，重写validate方法，完后校验规则的实现
+
+```java
+public class PhoneRule extends Rule {
+    public static PhoneRule getInstance() {
+        return new PhoneRule();
+    }
+
+    @Override
+    public void validate(RuleChain ruleChain) {
+        Object object = getValue(ruleChain);
+        execute(ruleChain, object, Validation::isTelephone);
+    }
+}
+
+```
+
+通过getValue(ruleChain)获取参数值，调用execute方法，传入进行校验的方法  isTelephone 进行回调，回调方法返回一个Boolean
+
+如果参数不符合要求，统一返回错误信息”xxx参数无效”
 
 
 
@@ -148,7 +180,7 @@ select.from("inve").columns("id,gco,gna").whereEqual("id", "123").and()
 testDao.find(select);
 ```
 
-lambda用于给筛选条件加上括号，nestWhere类用于嵌套查询
+lambda表达式和nestWhere用于给筛选条件加上括号，嵌套查询
 
 2.2.5
 
@@ -169,9 +201,34 @@ JdbcHelper.ifPresent(). 用于过滤值为空的字段，不作为查询条件
 
 
 
+2.2.6 子查询
+
+```java
+Select select = Select.of()
+                .from(()->
+                     Select.of().from("tableName")
+                            .whereGreaterThan("age", 21)
+                )
+                .whereEqual("age", 44)
+                .whereLessThan("time", "2021-10-02");
+
+```
+
+或者
+
+```java
+ Select nestSelect = Select.of().from("tableName")
+                .whereGreaterThan("age", 21);
+Select select = Select.of().from(nestSelect)
+  .whereEqual("age", 44)
+  .whereLessThan("time", "2021-10-02");
+```
 
 
-2.2.6	count
+
+
+
+2.2.7	count
 
 ```java
 testDao.count(select);
