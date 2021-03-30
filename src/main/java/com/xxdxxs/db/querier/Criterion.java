@@ -81,7 +81,7 @@ public class Criterion {
         if (this.column == null) {
             return "";
         }
-        String mark = this.column.replaceAll("\\.", "");
+        String mark = this.column.replaceAll("\\.", "").trim();
         /**是自查询就加一个标识，与外层查询条件区分**/
         if (isOfNestSelect) {
             mark = "nest" + mark;

@@ -11,6 +11,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
+/**
+ * 过滤类转化成sql
+ * @author xxdxxs
+ */
 public class TransForm {
 
     public TransForm() {

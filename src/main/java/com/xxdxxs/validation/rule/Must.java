@@ -1,6 +1,7 @@
 package com.xxdxxs.validation.rule;
 
 import com.xxdxxs.enums.ValidatorEnum;
+import com.xxdxxs.utils.StringUtils;
 import com.xxdxxs.validation.RuleChain;
 
 /**
@@ -17,7 +18,8 @@ public class Must extends Rule {
 
     @Override
     public void validate(RuleChain ruleChain) {
-        if (ruleChain.hasKey()) {
+        Object object = getValue(ruleChain);
+        if (ruleChain.hasKey() && !StringUtils.isEmpty(object)) {
             isSuccess(ruleChain);
         } else {
             stop(ruleChain, ValidatorEnum.PARAM_IS_NULL);

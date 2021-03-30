@@ -1,6 +1,7 @@
 package com.xxdxxs.db.component;
 
 import com.xxdxxs.annotate.handle.UniqueHandler;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Field;
@@ -89,7 +90,7 @@ public class JdbcHelper {
      * @param <T>
      */
     public static <T> void ifPresent(String key, T value, BiConsumer<String, T> biConsumer) {
-        if (!StringUtils.isEmpty(value)) {
+        if (!ObjectUtils.isEmpty(value)) {
             biConsumer.accept(key, value);
         }
     }
@@ -101,7 +102,7 @@ public class JdbcHelper {
      * @param <T>
      */
     public static <T> void ifPresent(T value, Consumer<T> consumer) {
-        if (!StringUtils.isEmpty(value)) {
+        if (!ObjectUtils.isEmpty(value)) {
             consumer.accept(value);
         }
     }

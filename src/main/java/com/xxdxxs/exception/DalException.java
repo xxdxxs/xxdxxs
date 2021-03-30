@@ -38,9 +38,4 @@ public abstract class DalException extends RuntimeException {
         return this;
     }
 
-   /* @Override
-    public String toString() {
-        return MessageFormat.format("{0}[{1}]", this.code, this.msg);
-    }
-    */
 }

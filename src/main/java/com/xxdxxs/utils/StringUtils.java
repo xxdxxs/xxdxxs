@@ -18,14 +18,6 @@ public class StringUtils extends org.springframework.util.StringUtils {
 
     public final static Pattern NUMBERPATTERN = Pattern.compile("[^(0-9)]");
 
-    public static void main(String[] args) {
-        String a = null;
-        String b = "";
-        String c = "123";
-        String d = "0989";
-        System.out.println(isAllNotEmpty(a, d));
-    }
-
 
     public static boolean isAllNotEmpty(Object... obj) {
         return Arrays.asList(obj).stream().allMatch(x -> !isEmpty(x));
@@ -50,8 +42,8 @@ public class StringUtils extends org.springframework.util.StringUtils {
     /**
      * 用逗号分割转换list > String, 另外加上引号
      *
-     * @param list
-     * @return
+     * @param list 参数
+     * @return String
      */
     public static String listToStringAddSign(List<String> list) {
         if (list.isEmpty()) {
@@ -68,8 +60,8 @@ public class StringUtils extends org.springframework.util.StringUtils {
     /**
      * 把用逗号连接的字符串加上引号
      *
-     * @param str
-     * @return
+     * @param str 字符串参数
+     * @return String
      */
     public static String stringAddSign(String str) {
         if (isEmpty(str)) {
@@ -87,10 +79,10 @@ public class StringUtils extends org.springframework.util.StringUtils {
     }
 
     /**
-     * 用逗号分割转换list > String
+     * 用逗号分割转换list to String
      *
-     * @param list
-     * @return
+     * @param list 参数
+     * @return String
      */
     public static String listToString(List<String> list) {
         StringBuffer stringBuffer = new StringBuffer();
@@ -105,9 +97,9 @@ public class StringUtils extends org.springframework.util.StringUtils {
     /**
      * 根据分隔符转换成list
      *
-     * @param str
-     * @param symbol
-     * @return
+     * @param str 字符串参数
+     * @param symbol 分隔符
+     * @return List
      */
     public static List<String> stringToList(String str, String symbol) {
         if (!isAllNotEmpty(str, symbol)) {
@@ -119,8 +111,8 @@ public class StringUtils extends org.springframework.util.StringUtils {
 
     /**
      * 保留字符串中的数字
-     * @param str
-     * @return
+     * @param str 字符串参数
+     * @return int
      */
     public static int retainNumber(String str) {
         return Integer.valueOf(NUMBERPATTERN.matcher(str).replaceAll("").trim());

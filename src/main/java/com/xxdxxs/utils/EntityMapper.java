@@ -17,10 +17,10 @@ import java.util.*;
 public abstract class EntityMapper {
 
     /**
-     * entity 转 object
+     * entity 转 Map
      * @param entity
      * @param <E>
-     * @return
+     * @return Map
      */
     public static <E extends Entity> Map<String, ? extends Serializable> objectToMap(E entity) {
         return objectToMap(entity, false);
@@ -28,11 +28,11 @@ public abstract class EntityMapper {
 
 
     /**
-     * entity 转 object， 移除非私有的，是基础数据类型的，是集合或map的属性
+     * entity 转 Map， 移除非私有的，是基础数据类型的，是集合或map的属性
      * @param entity
      * @param isRemoveNullValue 是否移除值为null的键值对
      * @param <E>
-     * @return
+     * @return Map
      */
     public static <E extends Entity> Map<String, ? extends Serializable> objectToMap(E entity, boolean isRemoveNullValue) {
         Map<String, Serializable> map = new HashMap<>();
@@ -68,10 +68,10 @@ public abstract class EntityMapper {
 
     /**
      * 比较两个实体类，返回属性值不同的字段
-     * @param oEntity
-     * @param newEntity
+     * @param oEntity 原实体
+     * @param newEntity  新实体
      * @param <E>
-     * @return
+     * @return  List
      */
     public static <E extends Entity> List<String> compareValue(E oEntity, E newEntity){
         Map<String, ? extends Serializable> oMap = objectToMap(oEntity);
@@ -88,13 +88,4 @@ public abstract class EntityMapper {
     };
 
 
-    public static void main(String[] args) {
-        Class clazz = new Context().getClass();
-        Field[] fields = clazz.getDeclaredFields();
-        Arrays.stream(fields).forEach(k -> {
-            if (Modifier.PRIVATE != k.getModifiers()) {
-                System.out.println(">>" + k.getName());
-            }
-        });
-    }
 }

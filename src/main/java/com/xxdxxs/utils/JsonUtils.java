@@ -75,6 +75,13 @@ public abstract class JsonUtils {
         }
     }
 
+    /**
+     * 根据路径获取key值
+     * 如/data/person/age，则获取的是age的值
+     * @param jsonStr
+     * @param path
+     * @return
+     */
     public static String getValueByPath(String jsonStr, String path) {
         String[] arr = path.split("/");
         String str = jsonStr;
@@ -85,4 +92,9 @@ public abstract class JsonUtils {
         return str;
     }
 
+
+    public static void main(String[] args) {
+        JSONObject jsonObject = new JSONObject();
+
+    }
 }

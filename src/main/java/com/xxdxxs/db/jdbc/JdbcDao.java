@@ -15,7 +15,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-
 import javax.sql.DataSource;
 import java.io.Serializable;
 import java.sql.Types;
@@ -55,6 +54,11 @@ public abstract class JdbcDao<E extends Entity> extends AbstractDao<JdbcTemplate
         super.setTemplate(jdbcTemplate);
         this.jdbcTemplate = jdbcTemplate;
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+    }
+
+
+    public void setTemplate(org.springframework.jdbc.core.JdbcTemplate jdbcTemplate) {
+        setTemplate(JdbcTemplate.of(jdbcTemplate));
     }
 
     private List<E> find(String sql, Map<String, Object> paramsMap, RowMapper<E> rowMapper) {
@@ -119,11 +123,14 @@ public abstract class JdbcDao<E extends Entity> extends AbstractDao<JdbcTemplate
     }
 
     public int count(Select select) {
+        checkPresentTable(select, select::from);
         return namedParameterJdbcTemplate.queryForObject(select.count().toString(), select.getParams(), Integer.class);
     }
 
 
     public int count(Select.Count count) {
+        Select select = count.getSelect();
+        checkPresentTable(select, select::from);
         return namedParameterJdbcTemplate.queryForObject(count.toString(), count.getSelect().getParams(), Integer.class);
     }
 
@@ -187,16 +194,16 @@ public abstract class JdbcDao<E extends Entity> extends AbstractDao<JdbcTemplate
 
     /**
      * 根据可确定唯一数据行的字段更新
-     * 排除属性值为null的字段更新
+     * 根据isRemoveNullValue参数判断是否排除属性值为null的字段更新
      * @param entity
      * @return
      */
-    public int updateByUnique(E entity) {
+    public int updateByUnique(E entity, boolean isRemoveNullValue) {
         List<String> uniqueColumns = JdbcHelper.getUniqueColumn(entity);
         if (uniqueColumns.isEmpty()) {
             throw new JdbcException(JdbcErrorMsg.NOT_EXIST_UNIQUE_COLUMN);
         }
-        Map<String, ? extends Serializable> map = EntityMapper.objectToMap(entity, true);
+        Map<String, ? extends Serializable> map = EntityMapper.objectToMap(entity, isRemoveNullValue);
         LinkedHashMap<String, Object> criterions = new LinkedHashMap<>();
         for (String uniqueColumn : uniqueColumns) {
             Object value = map.get(uniqueColumn);
@@ -209,19 +216,29 @@ public abstract class JdbcDao<E extends Entity> extends AbstractDao<JdbcTemplate
         return update(map, criterions);
     }
 
-
     /**
-     * 根据定义唯一数据的字段，插入或更新
-     *
+     * 根据可确定唯一数据行的字段更新
+     * 默认排除属性值为null的字段更新
      * @param entity
      * @return
      */
-    public boolean upsertByUniqueColumn(E entity) {
+    public int updateByUnique(E entity) {
+        return updateByUnique(entity, true);
+    }
+
+
+    /**
+     * 根据定义唯一数据的字段，插入或更新
+     * 根据isRemoveNullValue参数是否移除实体类中的值为null的字段
+     * @param entity
+     * @return
+     */
+    public boolean upsertByUniqueColumn(E entity, boolean isRemoveNullValue) {
         List<String> uniqueColumns = JdbcHelper.getUniqueColumn(entity);
         if (uniqueColumns.isEmpty()) {
             throw new JdbcException(JdbcErrorMsg.NOT_EXIST_UNIQUE_COLUMN);
         }
-        Map<String, ? extends Serializable> map = EntityMapper.objectToMap(entity);
+        Map<String, ? extends Serializable> map = EntityMapper.objectToMap(entity, isRemoveNullValue);
         Select select = Select.of();
         LinkedHashMap<String, Object> criterions = new LinkedHashMap<>();
         uniqueColumns.stream().forEach(x -> {
@@ -245,6 +262,17 @@ public abstract class JdbcDao<E extends Entity> extends AbstractDao<JdbcTemplate
         List<String> chanageColumns = EntityMapper.compareValue(originalEntity, entity);
         Map<String, ? extends Serializable> paramValues = MapUtils.retainKeys(map, chanageColumns);
         return update(paramValues, criterions) > 0;
+    }
+
+
+    /**
+     * 根据定义唯一数据的字段，插入或更新
+     * 默认移除实体类中值为null的字段
+     * @param entity
+     * @return
+     */
+    public boolean upsertByUniqueColumn(E entity) {
+        return upsertByUniqueColumn(entity, true);
     }
 
     public Boolean insert(E entity) {

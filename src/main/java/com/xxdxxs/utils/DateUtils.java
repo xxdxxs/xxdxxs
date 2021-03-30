@@ -1,5 +1,7 @@
 package com.xxdxxs.utils;
 
+import com.xxdxxs.support.conversion.Conversion;
+import com.xxdxxs.support.conversion.LocalDateConversion;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.sql.Time;
@@ -9,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -65,8 +68,8 @@ public abstract class DateUtils {
     /**
      * 将Date转换为LocalDate
      *
-     * @param date
-     * @return
+     * @param date 日期
+     * @return LocalDate
      */
     public static LocalDate toLocalDate(Date date) {
         return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()).toLocalDate();
@@ -75,8 +78,8 @@ public abstract class DateUtils {
     /**
      * 将LocalDate转换为Date
      *
-     * @param date
-     * @return
+     * @param date 日期
+     * @return Date
      */
     public static Date fromLocalDate(LocalDate date) {
         return Date.from(date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
@@ -85,8 +88,8 @@ public abstract class DateUtils {
     /**
      * 将Date转换为LocalDateTime
      *
-     * @param date
-     * @return
+     * @param date 日期
+     * @return LocalDateTime
      */
     public static LocalDateTime toLocalDateTime(Date date) {
         return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
@@ -96,7 +99,7 @@ public abstract class DateUtils {
      * 将String转换为LocalDateTime
      *
      * @param str
-     * @return
+     * @return LocalDateTime
      */
     public static LocalDateTime toLocalDateTime(String str) {
         return LocalDateTime.parse(str, COMMON);
@@ -105,8 +108,8 @@ public abstract class DateUtils {
     /**
      * 将LocalDateTime转换为Date
      *
-     * @param datetime
-     * @return
+     * @param datetime 时间
+     * @return Date
      */
     public static Date fromLocalDateTime(LocalDateTime datetime) {
         return Date.from(datetime.atZone(ZoneId.systemDefault()).toInstant());
@@ -115,19 +118,26 @@ public abstract class DateUtils {
     /**
      * 将String转换为Date
      *
-     * @param str
-     * @return
+     * @param str 时间字符串
+     * @return Date
      */
     public static Date parseString(String str) {
-        LocalDateTime localDateTime = toLocalDateTime(str);
-        return fromLocalDateTime(localDateTime);
+        Date date;
+        try {
+            LocalDateTime localDateTime = toLocalDateTime(str);
+            date = fromLocalDateTime(localDateTime);
+        } catch (DateTimeParseException e) {
+            date = fromLocalDate(ConvertUtil.LOCALDATE.convert(str).get());
+        }
+        return date;
     }
+
 
     /**
      * 将Date转换为LocalTime
      *
-     * @param date
-     * @return
+     * @param date 时间
+     * @return LocalTime
      */
     public static LocalTime toLocalTime(Date date) {
         return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()).toLocalTime();
@@ -136,11 +146,11 @@ public abstract class DateUtils {
     /**
      * 将LocalTime转换为Date
      *
-     * @param time
-     * @param year
-     * @param month
-     * @param day
-     * @return
+     * @param time LocalTime
+     * @param year  年
+     * @param month 月
+     * @param day 日
+     * @return Date
      */
     public static Date fromLocalTime(LocalTime time, int year, int month, int day) {
         return Date.from(time.atDate(LocalDate.of(year, month, day)).atZone(ZoneId.systemDefault()).toInstant());
@@ -149,8 +159,8 @@ public abstract class DateUtils {
     /**
      * 将Date转换为String
      *
-     * @param date
-     * @return
+     * @param date 时间
+     * @return String
      */
     public static String toString(Date date) {
         if (date == null) {

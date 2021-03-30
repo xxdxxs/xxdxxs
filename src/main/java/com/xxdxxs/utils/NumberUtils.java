@@ -8,7 +8,7 @@ import java.math.BigInteger;
  */
 public class NumberUtils extends org.springframework.util.NumberUtils {
 
-    public static <T extends Number> int compareTo(T base , T target) {
+    public static <T extends Number> int compareTo(T base, T target) {
         if (base == null && target == null) {
             return 0;
         }

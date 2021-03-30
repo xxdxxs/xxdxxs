@@ -18,25 +18,17 @@ import java.util.Map;
 
 
 /**
+ * excel导出
  * @Author: xxdxxs
- * @Date: Created in 16:49 2019/4/24
- * @Description: 导出excel
  */
-
 public class ExcelExport {
 
     private static Logger _log = LoggerFactory.getLogger(ExcelExport.class);
 
     private DecimalFormat decimalFormat = new DecimalFormat("###################.###########");
 
-    /**
-     * 添加列表信息
-     * sheet excelSheet
-     * list 导出主要信息
-     * fieldName 属性名称>数组对于表头 扩展属性格式extra.key
-     * contextStyle 内容样式
-     * isHaveSerial 是否添加序号
-     */
+
+
     public <T> void addContextByList(HSSFSheet sheet, List<T> list,
                                      String[] fieldName, HSSFCellStyle contextStyle, boolean isHaveSerial, String type) {
 
@@ -114,9 +106,7 @@ public class ExcelExport {
         }
     }
 
-    /**
-     * <P>Object转成String类型，便于填充单元格</P>
-     */
+
     public String objectToString(Object object) {
         String str = "";
         if (object == null) {
@@ -142,22 +132,13 @@ public class ExcelExport {
         return str;
     }
 
-    /**
-     * 添加标题(第一行)与表头(第二行)
-     *
-     * @param sheet excelSheet
-     *              assettitle 表头>数组
-     *              titleName 标题
-     *              headerStyle 标题样式
-     *              contextStyle  表头样式
-     */
+
     public void addTitle(HSSFSheet sheet, String[] assettitle, String titleName,
                          HSSFCellStyle headerStyle, HSSFCellStyle contextStyle) {
         HSSFRow row = sheet.createRow(0);
         HSSFCell cell = row.createCell(0);
         //cell.setCellValue(titleName);
         cell.setCellStyle(headerStyle);
-        //row = sheet.createRow(1);
         for (int i = 0; i < assettitle.length; i++) {
             cell = row.createCell(i);
             cell.setCellValue(assettitle[i]);
@@ -165,14 +146,7 @@ public class ExcelExport {
         }
     }
 
-    /**
-     * <p>
-     * 根据属性名获取属性值
-     * </p>
-     * fieldName 属性名 object 属性所属对象
-     * 支持Map扩展属性, 不支持List类型属性，
-     * return 属性值
-     */
+
     @SuppressWarnings("unchecked")
     public Object getFieldValueByName(String fieldName, Object object) {
         try {
@@ -207,18 +181,7 @@ public class ExcelExport {
         }
     }
 
-    /**
-     * 构建excel(文件类型fileType =100 代表通用格式，不用特殊处理字段值)
-     *
-     * @param list
-     * @param showName
-     * @param fieldName
-     * @param filename
-     * @param fileType
-     * @param request
-     * @param response
-     * @throws Exception
-     */
+
     public void buildExcelDocument(List<?> list, String[] showName, String[] fieldName, String filename,
                                    String fileType, HttpServletRequest request, HttpServletResponse response, String type) throws Exception {
         HSSFWorkbook workbook = new HSSFWorkbook();
@@ -245,7 +208,9 @@ public class ExcelExport {
         }
     }
 
-    //标题样式
+    /**
+     * 标题样式
+     */
     public HSSFCellStyle getHeader(HSSFWorkbook workbook) {
 
         HSSFCellStyle format = workbook.createCellStyle();
@@ -259,7 +224,9 @@ public class ExcelExport {
         return format;
     }
 
-    //内容样式
+    /**
+     *  内容样式
+     */
     public HSSFCellStyle getContext(HSSFWorkbook workbook) {
         HSSFCellStyle format = workbook.createCellStyle();
         HSSFFont font = workbook.createFont();

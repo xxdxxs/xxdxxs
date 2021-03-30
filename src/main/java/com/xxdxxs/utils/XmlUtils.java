@@ -17,9 +17,9 @@ public class XmlUtils {
     /**
      * 提供想要的节点数据的父节点
      *
-     * @param xml              字符串
-     * @param targetParentNode
-     * @return
+     * @param xml 字符串
+     * @param targetParentNode 目标节点父节点
+     * @return List<Map>
      * @throws DocumentException
      */
     public static List<Map<String, String>> fromXml(String xml, String targetParentNode) throws DocumentException {
@@ -38,4 +38,6 @@ public class XmlUtils {
         });
         return resultList;
     }
+
+
 }
