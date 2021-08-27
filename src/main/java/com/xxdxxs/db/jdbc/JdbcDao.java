@@ -259,7 +259,7 @@ public abstract class JdbcDao<E extends Entity> extends AbstractDao<JdbcTemplate
             throw new JdbcException(JdbcErrorMsg.DATA_BY_UNIQUE_COLUMN_MORETHAN_ONE);
         }
         E originalEntity = list.get(0);
-        List<String> chanageColumns = EntityMapper.compareValue(originalEntity, entity);
+        List<String> chanageColumns = EntityMapper.compareReturnDifferColumn(originalEntity, entity);
         Map<String, ? extends Serializable> paramValues = MapUtils.retainKeys(map, chanageColumns);
         return update(paramValues, criterions) > 0;
     }

@@ -3,7 +3,6 @@ package com.xxdxxs.validation.rule;
 import com.xxdxxs.enums.ValidatorEnum;
 import com.xxdxxs.utils.ConvertUtil;
 import com.xxdxxs.validation.RuleChain;
-import com.xxdxxs.validation.Validator;
 import org.springframework.util.Assert;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -76,9 +75,9 @@ public class Dates extends Rule {
         Object object = getValue(ruleChain);
         Optional<Date> value = ConvertUtil.DATE.convert(object);
         if (value.isPresent() && validate(value.get())) {
-            isSuccess(ruleChain);
+            success(ruleChain);
         } else {
-            stop(ruleChain, ValidatorEnum.PARAM_NOT_IN_RANGE);
+            failed(ruleChain, ValidatorEnum.PARAM_NOT_IN_RANGE);
         }
     }
 

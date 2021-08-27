@@ -25,9 +25,12 @@ public class CommonUtils {
      * @param object
      * @return Field[]
      */
-    public static Field[] getFields(Object object) {
+    public static Field[] getDeclaredFields(Object object) {
         Field[] fields = object.getClass().getDeclaredFields();
         return fields;
     }
+
+
+
 
 }

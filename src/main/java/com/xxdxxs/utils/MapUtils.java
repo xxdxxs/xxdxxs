@@ -1,14 +1,14 @@
 package com.xxdxxs.utils;
 
 import com.sun.org.apache.regexp.internal.RE;
+import com.xxdxxs.entity.Entity;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -91,5 +91,17 @@ public class MapUtils {
         }
         return map;
     }
+
+
+    public static <E extends Entity, K, V> Map<K, V> toMapper(List<E> entitys, Function<E, K> keyMapper,
+                                                     Function<E, V> valueMapper) {
+        Map<K, V> map = new HashMap<>();
+        entitys.forEach(e -> {
+            map.put(keyMapper.apply(e), valueMapper.apply(e));
+        });
+        return map;
+    }
+
+
 
 }

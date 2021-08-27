@@ -1,10 +1,13 @@
 package com.xxdxxs.validation.rule;
 
 import com.xxdxxs.enums.RuleType;
+import com.xxdxxs.utils.StringUtils;
 import com.xxdxxs.validation.RuleChain;
+import org.springframework.util.ObjectUtils;
 
 /**
  * 非必要
+ *
  * @author xxdxxs
  */
 public class Sometimes extends Rule {
@@ -21,6 +24,11 @@ public class Sometimes extends Rule {
 
     @Override
     public void validate(RuleChain ruleChain) {
-        isSuccess(ruleChain);
+        Object object = getValue(ruleChain);
+        if (!ruleChain.hasKey() || StringUtils.isEmpty(object)) {
+            stop(ruleChain);
+        } else {
+            success(ruleChain);
+        }
     }
 }

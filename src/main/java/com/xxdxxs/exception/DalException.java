@@ -5,7 +5,7 @@ package com.xxdxxs.exception;
  * 操作数据库异常类
  * @author xxdxxs
  */
-public abstract class DalException extends RuntimeException {
+public abstract class DalException extends BaseException {
 
     public String code;
 

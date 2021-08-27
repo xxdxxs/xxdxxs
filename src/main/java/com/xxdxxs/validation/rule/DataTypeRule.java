@@ -3,11 +3,6 @@ package com.xxdxxs.validation.rule;
 import com.xxdxxs.enums.DataType;
 import com.xxdxxs.enums.ValidatorEnum;
 import com.xxdxxs.validation.RuleChain;
-import com.xxdxxs.validation.Validation;
-import com.xxdxxs.validation.Validator;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 数据类型规则类
@@ -41,9 +36,9 @@ public class DataTypeRule extends Rule {
         Object object = getValue(ruleChain);
         boolean pass = dataType.validate(object);
         if (pass) {
-            isSuccess(ruleChain);
+            success(ruleChain);
         } else {
-            stop(ruleChain, ValidatorEnum.PARAM_IS_VAILD);
+            failed(ruleChain, ValidatorEnum.PARAM_TYPE_ERROR);
         }
     }
 

@@ -20,9 +20,9 @@ public class Must extends Rule {
     public void validate(RuleChain ruleChain) {
         Object object = getValue(ruleChain);
         if (ruleChain.hasKey() && !StringUtils.isEmpty(object)) {
-            isSuccess(ruleChain);
+            success(ruleChain);
         } else {
-            stop(ruleChain, ValidatorEnum.PARAM_IS_NULL);
+            failed(ruleChain, ValidatorEnum.PARAM_IS_NULL);
         }
     }
 

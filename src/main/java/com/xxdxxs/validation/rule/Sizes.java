@@ -4,7 +4,6 @@ import com.xxdxxs.enums.ValidatorEnum;
 import com.xxdxxs.utils.NumberUtils;
 import com.xxdxxs.validation.RuleChain;
 import com.xxdxxs.validation.Validation;
-import com.xxdxxs.validation.Validator;
 import org.springframework.util.Assert;
 
 /**
@@ -69,9 +68,9 @@ public class Sizes extends Rule {
     public void validate(RuleChain ruleChain) {
         Object value = getValue(ruleChain);
         if (Validation.isNumber(value) && NumberUtils.between((Number) value, min, max, isIncluded)) {
-            isSuccess(ruleChain);
+            success(ruleChain);
         } else {
-            stop(ruleChain, ValidatorEnum.PARAM_NOT_IN_RANGE);
+            failed(ruleChain, ValidatorEnum.PARAM_NOT_IN_RANGE);
         }
     }
 }

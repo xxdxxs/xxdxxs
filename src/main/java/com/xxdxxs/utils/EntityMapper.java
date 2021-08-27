@@ -1,7 +1,10 @@
 package com.xxdxxs.utils;
 
+import com.xxdxxs.annotate.Alias;
+import com.xxdxxs.annotate.handle.AliasHandle;
 import com.xxdxxs.entity.Entity;
 import com.xxdxxs.validation.Context;
+import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -73,7 +76,7 @@ public abstract class EntityMapper {
      * @param <E>
      * @return  List
      */
-    public static <E extends Entity> List<String> compareValue(E oEntity, E newEntity){
+    public static <E extends Entity> List<String> compareReturnDifferColumn(E oEntity, E newEntity){
         Map<String, ? extends Serializable> oMap = objectToMap(oEntity);
         Map<String, ? extends Serializable> newMap = objectToMap(newEntity);
         List<String> list = new ArrayList<>();
@@ -88,4 +91,36 @@ public abstract class EntityMapper {
     };
 
 
+    /**
+     * 从一个entity赋值给一个新的entity
+     * 同名的属性赋值，然后把使用别名注解的字段与原entity字段进行匹配赋值
+     * @param oEntity
+     * @param targetEntity
+     * @param <E>
+     * @param <V>
+     * @return
+     */
+    public static <E extends Entity, V extends Entity> V copyAttribute(E oEntity, V targetEntity) {
+        //先赋予属性名称一致的值
+        BeanUtils.copyProperties(oEntity, targetEntity);
+        //获取新实体有别名的字段
+        Map<String, String> aliasMap = new AliasHandle().getAlias(targetEntity.getClass());
+        aliasMap.forEach((alias, orignName) ->{
+            try {
+                Field field = oEntity.getClass().getDeclaredField(alias);
+                field.setAccessible(true);
+                try {
+                    Object value = field.get(oEntity);
+                    Field targetField = targetEntity.getClass().getDeclaredField(orignName);
+                    targetField.setAccessible(true);
+                    targetField.set(targetEntity, value);
+                } catch (IllegalAccessException e) {
+                    throw e.fillInStackTrace();
+                }
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        });
+        return targetEntity;
+    }
 }

@@ -64,6 +64,9 @@ public class FormHandler implements Convertable<String, Object> {
     }
 
 
-
+    public FormHandler tidy() {
+        data = MapUtils.removeNullValue(getData());
+        return this;
+    }
 
 }

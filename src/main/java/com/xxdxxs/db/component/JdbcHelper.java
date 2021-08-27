@@ -1,15 +1,18 @@
 package com.xxdxxs.db.component;
 
 import com.xxdxxs.annotate.handle.UniqueHandler;
+import com.xxdxxs.utils.StringUtils;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -105,5 +108,18 @@ public class JdbcHelper {
         if (!ObjectUtils.isEmpty(value)) {
             consumer.accept(value);
         }
+    }
+
+
+    public <D extends Supplementary> Map<Serializable, String> findNamesByCodes(List<? extends Serializable> codes, D dao){
+        return dao.findNamesByCodes(codes);
+    }
+
+    public <D extends Supplementary, T extends Serializable> String findNameByCode(T code, D dao){
+        Map<Serializable, String> map = findNamesByCodes(Arrays.asList(code), dao);
+        if (!map.isEmpty()) {
+            return null;
+        }
+        return String.valueOf(code);
     }
 }

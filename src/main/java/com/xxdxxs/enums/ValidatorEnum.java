@@ -7,6 +7,7 @@ package com.xxdxxs.enums;
 public enum ValidatorEnum {
     PARAM_IS_NULL("100001", "参数为空"),
     PARAM_IS_VAILD("100002", "参数无效"),
+    PARAM_TYPE_ERROR("100002", "参数类型错误"),
     ERROR_FORMAT("100003", "参数格式不正确"),
     OUt_LIMIT("100004", "超出范围"),
     ERROE_GET_EXCEPTION("100005", "获取异常信息出错"),
