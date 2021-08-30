@@ -4,10 +4,13 @@
 ```java
 String str = “json字符串”
 Validator validator = new Validator(FormHandler.ofJson(str));
-validator.set("age", "年龄").must().string()
-         .set("phone", "电话").date().must()
-         .set("biid", "订单号").date().sometimes()
-         .end();
+ Validator validator = new Validator(FormHandler.ofJson(str));
+        validator.set("door", "门牌").sometimes().string()
+                .set("name", "名字").sometimes().string()
+                .set("age", "年龄").must().integer().larger(23, true)
+                .set("owner", "货主").must().string()
+                .set("carrier", "承运商").must().string()
+                .end();
 validator.isValid()
 
 ```
@@ -15,6 +18,11 @@ validator.isValid()
   must()表示 参数为必要的，则不能为空
   sometimes（）表示非必填
   string()，date()等，代表设定参数的数据类型
+
+需要注意的是，sometimes() 和must() 是校验规则链中的的顶部规则，必须写在规则链的最前面！！！
+
+
+
   然后执行 validator.isValid(),  结果为boolean
 
 ```java
@@ -440,6 +448,31 @@ EntityMapper:实体映射器
 DateUtils:日期时间的工具类，各种时间格式的转换
 
 
+
+
+
+web
+
+在平时开发中，经常遇到字段值为code（数字型），需要转换成对应的中文值，这里提供一个较为简单的转换方式，在查询对应中文的dao中实现Supplementary接口，实现findNamesByCodes方法，然后在需要转换的字段上加上注解Additional，在注解里写上要新增的中文值的字段名称，和dao的名称，最后调用ReturnHandler类中的attach方法进行转换，注意code对应的中文值是通过代理新增上的，原本的实体类不用定义该属性值，只需写在注解Additional上就行, springboot的项目需要在启动类上加上EnableScanPointAspect这个注解
+
+```java
+Map<Serializable, String> findNamesByCodes(List<? extends Serializable> list);
+
+public static <E extends Entity> List<Map<String, Object>> attach(List<E> entityList)
+   
+public static <E extends Entity> Map<String, Object> attach(E entity)   
+   
+```
+
+
+
+
+
+数据库中查询出来的实体类和业务层的实体类在个别字段上定义的名称不同，可通过注解Alias进行值的转换，在注解中写上对应的新的属性名称，然后调用EntityMapper类中的copyAttribute，可进行两个实体类属性的赋值，并找到映射关系把不同名称的属性进行赋值
+
+```java
+public static <E extends Entity, V extends Entity> V copyAttribute(E oEntity, V targetEntity)
+```
 
 
 
